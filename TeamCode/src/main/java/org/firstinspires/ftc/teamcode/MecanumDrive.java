@@ -131,8 +131,8 @@ public final class MecanumDrive {
             //TODO Step 4.1 Run MecanumDirectionDebugger Tuning OpMode to set motor direction correctly
             //Uncomment the lines for which the motorDirection need to be reversed to ensure all motors run forward in test
             //leftFront.setDirection(DcMotorEx.Direction.REVERSE);
-            //leftRear.setDirection(DcMotorEx.Direction.REVERSE);
-            rightRear.setDirection(DcMotorEx.Direction.REVERSE);
+            //leftBack.setDirection(DcMotorEx.Direction.REVERSE);
+            rightBack.setDirection(DcMotorEx.Direction.REVERSE);
             rightFront.setDirection(DcMotorEx.Direction.REVERSE);
             //TODO End Step 4.1
 

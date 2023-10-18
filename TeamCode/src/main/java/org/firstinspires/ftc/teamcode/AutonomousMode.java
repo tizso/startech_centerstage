@@ -29,11 +29,15 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import static com.qualcomm.robotcore.util.ElapsedTime.Resolution.MILLISECONDS;
+import static com.qualcomm.robotcore.util.ElapsedTime.Resolution.SECONDS;
+
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
@@ -212,7 +216,7 @@ public class AutonomousMode extends LinearOpMode {
                         //.splineToLinearHeading(dropPurplePixelPose,0)
                         .build());
 
-        //TODO : Code action to drop Purple Pixel on Spike Mark
+        //TODO : Code to drop Purple Pixel on Spike Mark
 
         //For Blue Right and Red Left, intake pixel from stack
         if (startPosition == START_POSITION.BLUE_RIGHT ||
@@ -224,12 +228,22 @@ public class AutonomousMode extends LinearOpMode {
                             .build());
         }
 
-        //TODO : Code action to intake pixel from stack
+        //TODO : Code to intake pixel from stack
 
-        //Move robot through midwayPose1, interimPose 2 to dropYellowPixelPose
+        //TODO : Wait till pixel is dropped. Adjust time in seconds. Use this function instead of sleep()
+        safeWaitSeconds(1);
+
+        //Move robot to midwayPose1
         Actions.runBlocking(
                 drive.actionBuilder(drive.pose)
                         .strafeToLinearHeading(midwayPose1.position, midwayPose1.heading)
+                        .build());
+
+        //TODO: For Blue Right and Red Left, Add code to raise Stage Door to pass through
+
+        //Move robot to midwayPose2 and to dropYellowPixelPose
+        Actions.runBlocking(
+                drive.actionBuilder(drive.pose)
                         .strafeToLinearHeading(midwayPose2.position, midwayPose2.heading)
                         //.splineToLinearHeading(midwayPose1,0)
                         //.splineToLinearHeading(midwayPose2,0)
@@ -237,9 +251,10 @@ public class AutonomousMode extends LinearOpMode {
                         .splineToLinearHeading(dropYellowPixelPose,0)
                         .build());
 
-        //TODO : Code action to drop Pixel
 
-        //Move robot to parking
+        //TODO : Code to drop Pixel on Backdrop
+
+        //Move robot to park in Backstage
         Actions.runBlocking(
                 drive.actionBuilder(drive.pose)
                         .strafeToLinearHeading(parkPose.position, parkPose.heading)
@@ -282,7 +297,13 @@ public class AutonomousMode extends LinearOpMode {
         telemetry.clearAll();
     }
 
-
+    //method to wait safely with stop button working if needed. Use this instead of sleep
+    public void safeWaitSeconds(double time) {
+        ElapsedTime timer = new ElapsedTime(SECONDS);
+        timer.reset();
+        while (!isStopRequested() && timer.time() < time) {
+        }
+    }
 
     /**
      * Initialize the TensorFlow Object Detection processor.

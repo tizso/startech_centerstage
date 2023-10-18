@@ -144,50 +144,46 @@ public class AutonomousMode extends LinearOpMode {
         switch (startPosition) {
             case BLUE_LEFT:
                 initPose = new Pose2d(-54, 12, Math.toRadians(0)); //Starting pose
+                interimPose1 = new Pose2d(-54,12,0);
+                interimPose2 = new Pose2d(-54,36, Math.toRadians(-90));
                 switch(identifiedSpikeMarkLocation){
                     case LEFT:
                         dropPurplePixelPose = new Pose2d(-30, 23, Math.toRadians(90));
-                        interimPose1 = new Pose2d(-54,12,0);
-                        interimPose2 = new Pose2d(-54,36, Math.toRadians(-90));
                         dropYellowPixelPose = new Pose2d(-36, 46, Math.toRadians(-90));
                         break;
                     case MIDDLE:
                         dropPurplePixelPose = new Pose2d(-30, 12, Math.toRadians(0));
-                        interimPose1 = new Pose2d(-54,12,0);
-                        interimPose2 = new Pose2d(-54,36,Math.toRadians(-90));
                         dropYellowPixelPose = new Pose2d(-36, 46, Math.toRadians(-90));
                         break;
                     case RIGHT:
                         dropPurplePixelPose = new Pose2d(30, 2, Math.toRadians(-90));
-                        interimPose1 = new Pose2d(-54,12,-90);
-                        interimPose2 = new Pose2d(-54,36,Math.toRadians(-90));
                         dropYellowPixelPose = new Pose2d(-36, 46, Math.toRadians(-90));
                         break;
                 }
                 break;
             case BLUE_RIGHT:
                 initPose = new Pose2d(-54, -36, Math.toRadians(0));//Starting pose
+                interimPose1 = new Pose2d(-12,-36,0);
+                interimPose2 = new Pose2d(-12,36,0);
                 switch(identifiedSpikeMarkLocation){
                     case LEFT:
                         dropPurplePixelPose = new Pose2d(-30, -25, Math.toRadians(90));
-                        interimPose1 = new Pose2d(-12,-36,0);
-                        interimPose2 = new Pose2d(-12,36,0);
                         dropYellowPixelPose = new Pose2d(-36, 46, Math.toRadians(-90));
                         break;
                     case MIDDLE:
                         dropPurplePixelPose = new Pose2d(-30, -36, Math.toRadians(0));
-                        interimPose1 = new Pose2d(-12, -36, 0);
-                        interimPose2 = new Pose2d(-12, 36,0);
                         dropYellowPixelPose = new Pose2d(-36, 46, Math.toRadians(-90));
                         break;
                     case RIGHT:
-                        dropPurplePixelPose = new Pose2d(-30, -, Math.toRadians(0));
+                        dropPurplePixelPose = new Pose2d(-30, 36, Math.toRadians(-90));
                         dropYellowPixelPose = new Pose2d(0, 0, Math.toRadians(0));
                         break;
                 }
                 break;
             case RED_LEFT:
                 initPose = new Pose2d(54, -36, Math.toRadians(180));//Starting pose
+                interimPose1 = new Pose2d(-12,-36,0);
+                interimPose2 = new Pose2d(-12,36,0);
                 switch(identifiedSpikeMarkLocation){
                     case LEFT:
                         dropPurplePixelPose = new Pose2d(0, 0, Math.toRadians(0));
@@ -205,6 +201,8 @@ public class AutonomousMode extends LinearOpMode {
                 break;
             case RED_RIGHT:
                 initPose = new Pose2d(54, 12, Math.toRadians(180)); //Starting pose
+                interimPose1 = new Pose2d(-12,-36,0);
+                interimPose2 = new Pose2d(-12,36,0);
                 switch(identifiedSpikeMarkLocation){
                     case LEFT:
                         dropPurplePixelPose = new Pose2d(0, 0, Math.toRadians(0));
@@ -288,7 +286,8 @@ public class AutonomousMode extends LinearOpMode {
         }
         telemetry.clearAll();
     }
-}
+
+
 
     /**
      * Initialize the TensorFlow Object Detection processor.

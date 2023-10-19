@@ -162,7 +162,7 @@ public class AutoRotated extends LinearOpMode {
                 switch(identifiedSpikeMarkLocation){
                     case LEFT:
                         dropPurplePixelPose = new Pose2d(7, -35, Math.toRadians(135));
-                        dropYellowPixelPose = new Pose2d(48, 40, Math.toRadians(0));
+                        dropYellowPixelPose = new Pose2d(48, -32, Math.toRadians(0));
                         break;
                     case MIDDLE:
                         dropPurplePixelPose = new Pose2d(12, -32, Math.toRadians(0));
@@ -170,11 +170,11 @@ public class AutoRotated extends LinearOpMode {
                         break;
                     case RIGHT:
                         dropPurplePixelPose = new Pose2d(17, -35, Math.toRadians(45));
-                        dropYellowPixelPose = new Pose2d(48, 32, Math.toRadians(0));
+                        dropYellowPixelPose = new Pose2d(48, -40, Math.toRadians(0));
                         break;
                 }
                 midwayPose1 = new Pose2d(12, -50, Math.toRadians(90));
-                midwayPose2 = new Pose2d(36, 50, Math.toRadians(0));
+                midwayPose2 = new Pose2d(36, -50, Math.toRadians(0));
                 waitSecondsBeforeDrop = 2; //TODO: Adjust time to wait for alliance partner to move from board
                 parkPose = new Pose2d(46, -60, Math.toRadians(0));
                 break;

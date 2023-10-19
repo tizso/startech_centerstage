@@ -134,97 +134,97 @@ public class AutoRotated extends LinearOpMode {
 
         switch (startPosition) {
             case BLUE_LEFT:
-                initPose = new Pose2d(-60, 12, Math.toRadians(0)); //Starting pose
+                initPose = new Pose2d(12, 60, Math.toRadians(-90)); //Starting pose
                 drive = new MecanumDrive(hardwareMap, initPose);
                 switch(identifiedSpikeMarkLocation){
                     case LEFT:
-                        dropPurplePixelPose = new Pose2d(-35, 17, Math.toRadians(45));
-                        dropYellowPixelPose = new Pose2d(-40, 48, Math.toRadians(90));
+                        dropPurplePixelPose = new Pose2d(17, 35, Math.toRadians(-45));
+                        dropYellowPixelPose = new Pose2d(48, 40, Math.toRadians(0));
                         break;
                     case MIDDLE:
-                        dropPurplePixelPose = new Pose2d(-32, 12, Math.toRadians(0));
-                        dropYellowPixelPose = new Pose2d(-36, 48, Math.toRadians(90));
+                        dropPurplePixelPose = new Pose2d(12, 32, Math.toRadians(-90));
+                        dropYellowPixelPose = new Pose2d(48, 36,  Math.toRadians(0));
                         break;
                     case RIGHT:
-                        dropPurplePixelPose = new Pose2d(-35, 7, Math.toRadians(-45));
-                        dropYellowPixelPose = new Pose2d(-32, 48, Math.toRadians(90));
+                        dropPurplePixelPose = new Pose2d(7, 35, Math.toRadians(-135));
+                        dropYellowPixelPose = new Pose2d(48, 32, Math.toRadians(0));
                         break;
                 }
-                midwayPose1 = new Pose2d(-50,12,Math.toRadians(0));
-                midwayPose2 = new Pose2d(-50,36, Math.toRadians(90));
+                midwayPose1 = new Pose2d(12, 50, Math.toRadians(-90));
+                midwayPose2 = new Pose2d(36, 50, Math.toRadians(0));
                 waitSecondsBeforeDrop = 2; //TODO: Adjust time to wait for alliance partner to move from board
-                parkPose = new Pose2d(-60,46, Math.toRadians(90));
+                parkPose = new Pose2d(46, 60, Math.toRadians(0));
                 break;
 
             case RED_RIGHT:
-                initPose = new Pose2d(60, 12, Math.toRadians(180)); //Starting pose
+                initPose = new Pose2d(12, -60, Math.toRadians(90)); //Starting pose
                 drive = new MecanumDrive(hardwareMap, initPose);
                 switch(identifiedSpikeMarkLocation){
                     case LEFT:
-                        dropPurplePixelPose = new Pose2d(35, 7, Math.toRadians(225));
-                        dropYellowPixelPose = new Pose2d(32, 48, Math.toRadians(90));
+                        dropPurplePixelPose = new Pose2d(7, -35, Math.toRadians(135));
+                        dropYellowPixelPose = new Pose2d(48, 40, Math.toRadians(0));
                         break;
                     case MIDDLE:
-                        dropPurplePixelPose = new Pose2d(32, 12, Math.toRadians(180));
-                        dropYellowPixelPose = new Pose2d(36, 48, Math.toRadians(90));
+                        dropPurplePixelPose = new Pose2d(12, -32, Math.toRadians(0));
+                        dropYellowPixelPose = new Pose2d(48, 36,  Math.toRadians(0));
                         break;
                     case RIGHT:
-                        dropPurplePixelPose = new Pose2d(35, 17, Math.toRadians(135));
-                        dropYellowPixelPose = new Pose2d(40, 48, Math.toRadians(90));
+                        dropPurplePixelPose = new Pose2d(17, -35, Math.toRadians(45));
+                        dropYellowPixelPose = new Pose2d(48, 32, Math.toRadians(0));
                         break;
                 }
-                midwayPose1 = new Pose2d(50,12, Math.toRadians(180));
-                midwayPose2 = new Pose2d(50,36, Math.toRadians(90));
-                waitSecondsBeforeDrop = 0; //TODO: Adjust time to wait for alliance partner to move from board
-                parkPose = new Pose2d(60,46, Math.toRadians(90));
+                midwayPose1 = new Pose2d(12, -50, Math.toRadians(90));
+                midwayPose2 = new Pose2d(36, 50, Math.toRadians(0));
+                waitSecondsBeforeDrop = 2; //TODO: Adjust time to wait for alliance partner to move from board
+                parkPose = new Pose2d(46, -60, Math.toRadians(0));
                 break;
 
             case BLUE_RIGHT:
-                initPose = new Pose2d(-60, -36, Math.toRadians(0)); //Starting pose
+                initPose = new Pose2d(-36, 60, Math.toRadians(-90)); //Starting pose
                 drive = new MecanumDrive(hardwareMap, initPose);
                 switch(identifiedSpikeMarkLocation){
                     case LEFT:
-                        dropPurplePixelPose = new Pose2d(-15, -31, Math.toRadians(135));
-                        dropYellowPixelPose = new Pose2d(-40, 48, Math.toRadians(90));
+                        dropPurplePixelPose = new Pose2d(-31, 15, Math.toRadians(45));
+                        dropYellowPixelPose = new Pose2d(48, 40, Math.toRadians(0));
                         break;
                     case MIDDLE:
-                        dropPurplePixelPose = new Pose2d(-8, -36, Math.toRadians(180));
-                        dropYellowPixelPose = new Pose2d(-36, 48, Math.toRadians(90));
+                        dropPurplePixelPose = new Pose2d(-36, 8, Math.toRadians(90));
+                        dropYellowPixelPose = new Pose2d(48, 36, Math.toRadians(0));
                         break;
                     case RIGHT:
-                        dropPurplePixelPose = new Pose2d(-15, -41, Math.toRadians(225));
-                        dropYellowPixelPose = new Pose2d(-32, 48, Math.toRadians(90));
+                        dropPurplePixelPose = new Pose2d(-41, 15, Math.toRadians(135));
+                        dropYellowPixelPose = new Pose2d(48, 32, Math.toRadians(0));
                         break;
                 }
-                intakeStack = new Pose2d(-12,-54,Math.toRadians(270));
-                midwayPose1 = new Pose2d(-12,-18,Math.toRadians(90));
-                midwayPose2 = new Pose2d(-12,36, Math.toRadians(90));
+                intakeStack = new Pose2d(-54, 12,Math.toRadians(180));
+                midwayPose1 = new Pose2d(-18, 12, Math.toRadians(0));
+                midwayPose2 = new Pose2d(36, 12, Math.toRadians(0));
                 waitSecondsBeforeDrop = 2; //TODO: Adjust time to wait for alliance partner to move from board
-                parkPose = new Pose2d(-12,46, Math.toRadians(90));
+                parkPose = new Pose2d(46, 12, Math.toRadians(0));
                 break;
 
             case RED_LEFT:
-                initPose = new Pose2d(60, -36, Math.toRadians(180)); //Starting pose
+                initPose = new Pose2d(-36, -60, Math.toRadians(90)); //Starting pose
                 drive = new MecanumDrive(hardwareMap, initPose);
                 switch(identifiedSpikeMarkLocation){
                     case LEFT:
-                        dropPurplePixelPose = new Pose2d(15, -41, Math.toRadians(-45));
-                        dropYellowPixelPose = new Pose2d(32, 48, Math.toRadians(90));
+                        dropPurplePixelPose = new Pose2d(-41, -15, Math.toRadians(135));
+                        dropYellowPixelPose = new Pose2d(48, -32, Math.toRadians(0));
                         break;
                     case MIDDLE:
-                        dropPurplePixelPose = new Pose2d(8, -36, Math.toRadians(0));
-                        dropYellowPixelPose = new Pose2d(36, 48, Math.toRadians(90));
+                        dropPurplePixelPose = new Pose2d(-36, -8, Math.toRadians(-90));
+                        dropYellowPixelPose = new Pose2d(48, -36, Math.toRadians(0));
                         break;
                     case RIGHT:
-                        dropPurplePixelPose = new Pose2d(15, -31, Math.toRadians(45));
-                        dropYellowPixelPose = new Pose2d(40, 48, Math.toRadians(90));
+                        dropPurplePixelPose = new Pose2d(-31, -15, Math.toRadians(-45));
+                        dropYellowPixelPose = new Pose2d(48, -40, Math.toRadians(0));
                         break;
                 }
-                intakeStack = new Pose2d(12,-54,Math.toRadians(270));
-                midwayPose1 = new Pose2d(12,-18,Math.toRadians(90));
-                midwayPose2 = new Pose2d(12,36, Math.toRadians(90));
+                intakeStack = new Pose2d(-54, -12,Math.toRadians(-180));
+                midwayPose1 = new Pose2d(-18, -12, Math.toRadians(0));
+                midwayPose2 = new Pose2d(36, -12, Math.toRadians(0));
                 waitSecondsBeforeDrop = 2; //TODO: Adjust time to wait for alliance partner to move from board
-                parkPose = new Pose2d(12,46, Math.toRadians(90));
+                parkPose = new Pose2d(46, -12, Math.toRadians(0));
                 break;
         }
 

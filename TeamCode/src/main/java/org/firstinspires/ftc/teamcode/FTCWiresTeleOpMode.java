@@ -38,10 +38,10 @@ public class FTCWiresTeleOpMode extends LinearOpMode {
 
                 drive.updatePoseEstimate();
 
-                telemetry.addData("LF Encoder", drive.leftFront.getCurrentPosition());
-                telemetry.addData("LB Encoder", drive.leftBack.getCurrentPosition());
-                telemetry.addData("RF Encoder", drive.rightFront.getCurrentPosition());
-                telemetry.addData("RB Encoder", drive.rightBack.getCurrentPosition());
+                //telemetry.addData("LF Encoder", drive.leftFront.getCurrentPosition());
+                //telemetry.addData("LB Encoder", drive.leftBack.getCurrentPosition());
+                //telemetry.addData("RF Encoder", drive.rightFront.getCurrentPosition());
+                //telemetry.addData("RB Encoder", drive.rightBack.getCurrentPosition());
 
                 telemetry.addData("x", drive.pose.position.x);
                 telemetry.addData("y", drive.pose.position.y);

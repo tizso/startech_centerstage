@@ -14,7 +14,7 @@ import org.firstinspires.ftc.teamcode.tuning.TuningOpModes;
  */
 
 @TeleOp(name = "FTC Wires TeleOp", group = "00-Teleop")
-public class TeleOpMode extends LinearOpMode {
+public class FTCWiresTeleOpMode extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         double SLOW_DOWN_FACTOR = 0.5; //TODO Adjust to driver comfort
@@ -37,6 +37,11 @@ public class TeleOpMode extends LinearOpMode {
                 ));
 
                 drive.updatePoseEstimate();
+
+                telemetry.addData("LF Encoder", drive.leftFront.getCurrentPosition());
+                telemetry.addData("LB Encoder", drive.leftBack.getCurrentPosition());
+                telemetry.addData("RF Encoder", drive.rightFront.getCurrentPosition());
+                telemetry.addData("RB Encoder", drive.rightBack.getCurrentPosition());
 
                 telemetry.addData("x", drive.pose.position.x);
                 telemetry.addData("y", drive.pose.position.y);

@@ -29,11 +29,13 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import static com.qualcomm.robotcore.util.ElapsedTime.Resolution.SECONDS;
+
 import com.acmerobotics.roadrunner.Pose2d;
-import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
@@ -46,8 +48,11 @@ import java.util.List;
 /**
  * FTC WIRES Autonomous Example for only vision detection using tensorflow and park
  */
-@Autonomous(name = "FTC Wires Auto Only Park", group = "00-Autonomous", preselectTeleOp = "FTC Wires TeleOp")
-public class AutonomousMode extends LinearOpMode {
+@Autonomous(name = "FTC Wires Autonomous Mode", group = "00-Autonomous", preselectTeleOp = "FTC Wires TeleOp")
+public class FTCWiresAutonomous extends LinearOpMode {
+
+    public static String TEAM_NAME = "EDIT TEAM NAME"; //TODO: Enter team Name
+    public static int TEAM_NUMBER = 0; //TODO: Enter team Number
 
     private static final boolean USE_WEBCAM = true;  // true for webcam, false for phone camera
 
@@ -69,13 +74,14 @@ public class AutonomousMode extends LinearOpMode {
         MIDDLE,
         RIGHT
     }
-    public static IDENTIFIED_SPIKE_MARK_LOCATION identifiedSpikeMarkLocation = IDENTIFIED_SPIKE_MARK_LOCATION.MIDDLE;
+    public static IDENTIFIED_SPIKE_MARK_LOCATION identifiedSpikeMarkLocation = IDENTIFIED_SPIKE_MARK_LOCATION.LEFT;
 
     @Override
     public void runOpMode() throws InterruptedException {
 
         //Key Pay inputs to selecting Starting Position of robot
         selectStartingPosition();
+        telemetry.addData("Selected Starting Position", startPosition);
 
         //Activate Camera Vision that uses TensorFlow for pixel detection
         initTfod();
@@ -95,161 +101,179 @@ public class AutonomousMode extends LinearOpMode {
             telemetry.update();
         }
 
+        //Stop Vision process
+        /*if (visionPortal.getCameraState() != CAMERA_DEVICE_CLOSED) {
+            //visionPortal.stopStreaming();
+            visionPortal.close();
+        }*/
+
         //Game Play Button  is pressed
         if (opModeIsActive() && !isStopRequested()) {
-            //Stop Vision process
-            visionPortal.close();
-
             //Build parking trajectory based on last detected target by vision
             runAutonoumousMode();
         }
-
-        /*
-        if (opModeIsActive()) {
-            while (opModeIsActive()) {
-
-                telemetryTfod();
-
-                // Push telemetry to the Driver Station.
-                telemetry.update();
-
-                // Save CPU resources; can resume streaming when needed.
-                if (gamepad1.dpad_down) {
-                    visionPortal.stopStreaming();
-                } else if (gamepad1.dpad_up) {
-                    visionPortal.resumeStreaming();
-                }
-
-                // Share the CPU.
-                sleep(20);
-            }
-        }*/
-
-        // Save more CPU resources when camera is no longer needed.
-        visionPortal.close();
-
     }   // end runOpMode()
 
     public void runAutonoumousMode() {
-        MecanumDrive drive = new MecanumDrive(hardwareMap, new Pose2d(0, 0, 0));
+        //MecanumDrive drive = new MecanumDrive(hardwareMap, new Pose2d(0, 0, 0));
 
         //Initialize any other Pose2d's as desired
         Pose2d initPose = new Pose2d(0, 0, 0); // Starting Pose
         Pose2d dropPurplePixelPose = new Pose2d(0, 0, 0);
-        Pose2d interimPose1 = new Pose2d(0,0,0);
-        Pose2d interimPose2 = new Pose2d(0,0,0);
+        Pose2d midwayPose1 = new Pose2d(0,0,0);
+        Pose2d midwayPose2 = new Pose2d(0,0,0);
+        Pose2d intakeStack = new Pose2d(0,0,0);
         Pose2d dropYellowPixelPose = new Pose2d(0, 0, 0);
         Pose2d parkPose = new Pose2d(0, 0, 0);
+        double waitSecondsBeforeDrop = 0;
+        MecanumDrive drive = new MecanumDrive(hardwareMap, initPose);
 
         switch (startPosition) {
             case BLUE_LEFT:
-                initPose = new Pose2d(-54, 12, Math.toRadians(0)); //Starting pose
-                interimPose1 = new Pose2d(-54,12,0);
-                interimPose2 = new Pose2d(-54,36, Math.toRadians(-90));
+                initPose = new Pose2d(12, 60, Math.toRadians(-90)); //Starting pose
+                drive = new MecanumDrive(hardwareMap, initPose);
                 switch(identifiedSpikeMarkLocation){
                     case LEFT:
-                        dropPurplePixelPose = new Pose2d(-30, 23, Math.toRadians(90));
-                        dropYellowPixelPose = new Pose2d(-36, 46, Math.toRadians(-90));
+                        dropPurplePixelPose = new Pose2d(17, 35, Math.toRadians(-45));
+                        dropYellowPixelPose = new Pose2d(48, 40, Math.toRadians(0));
                         break;
                     case MIDDLE:
-                        dropPurplePixelPose = new Pose2d(-30, 12, Math.toRadians(0));
-                        dropYellowPixelPose = new Pose2d(-36, 46, Math.toRadians(-90));
+                        dropPurplePixelPose = new Pose2d(12, 32, Math.toRadians(-90));
+                        dropYellowPixelPose = new Pose2d(48, 36,  Math.toRadians(0));
                         break;
                     case RIGHT:
-                        dropPurplePixelPose = new Pose2d(30, 2, Math.toRadians(-90));
-                        dropYellowPixelPose = new Pose2d(-36, 46, Math.toRadians(-90));
+                        dropPurplePixelPose = new Pose2d(7, 35, Math.toRadians(-135));
+                        dropYellowPixelPose = new Pose2d(48, 32, Math.toRadians(0));
                         break;
                 }
+                midwayPose1 = new Pose2d(12, 50, Math.toRadians(-90));
+                midwayPose2 = new Pose2d(36, 50, Math.toRadians(0));
+                waitSecondsBeforeDrop = 2; //TODO: Adjust time to wait for alliance partner to move from board
+                parkPose = new Pose2d(46, 60, Math.toRadians(0));
                 break;
-            case BLUE_RIGHT:
-                initPose = new Pose2d(-54, -36, Math.toRadians(0));//Starting pose
-                interimPose1 = new Pose2d(-12,-36,0);
-                interimPose2 = new Pose2d(-12,36,0);
-                switch(identifiedSpikeMarkLocation){
-                    case LEFT:
-                        dropPurplePixelPose = new Pose2d(-30, -25, Math.toRadians(90));
-                        dropYellowPixelPose = new Pose2d(-36, 46, Math.toRadians(-90));
-                        break;
-                    case MIDDLE:
-                        dropPurplePixelPose = new Pose2d(-30, -36, Math.toRadians(0));
-                        dropYellowPixelPose = new Pose2d(-36, 46, Math.toRadians(-90));
-                        break;
-                    case RIGHT:
-                        dropPurplePixelPose = new Pose2d(-30, 36, Math.toRadians(-90));
-                        dropYellowPixelPose = new Pose2d(0, 0, Math.toRadians(0));
-                        break;
-                }
-                break;
-            case RED_LEFT:
-                initPose = new Pose2d(54, -36, Math.toRadians(180));//Starting pose
-                interimPose1 = new Pose2d(-12,-36,0);
-                interimPose2 = new Pose2d(-12,36,0);
-                switch(identifiedSpikeMarkLocation){
-                    case LEFT:
-                        dropPurplePixelPose = new Pose2d(0, 0, Math.toRadians(0));
-                        dropYellowPixelPose = new Pose2d(0, 0, Math.toRadians(0));
-                        break;
-                    case MIDDLE:
-                        dropPurplePixelPose = new Pose2d(1, 1, Math.toRadians(0));
-                        dropYellowPixelPose = new Pose2d(0, 0, Math.toRadians(0));
-                        break;
-                    case RIGHT:
-                        dropPurplePixelPose = new Pose2d(2, 2, Math.toRadians(0));
-                        dropYellowPixelPose = new Pose2d(0, 0, Math.toRadians(0));
-                        break;
-                }
-                break;
+
             case RED_RIGHT:
-                initPose = new Pose2d(54, 12, Math.toRadians(180)); //Starting pose
-                interimPose1 = new Pose2d(-12,-36,0);
-                interimPose2 = new Pose2d(-12,36,0);
+                initPose = new Pose2d(12, -60, Math.toRadians(90)); //Starting pose
+                drive = new MecanumDrive(hardwareMap, initPose);
                 switch(identifiedSpikeMarkLocation){
                     case LEFT:
-                        dropPurplePixelPose = new Pose2d(0, 0, Math.toRadians(0));
-                        dropYellowPixelPose = new Pose2d(0, 0, Math.toRadians(0));
+                        dropPurplePixelPose = new Pose2d(7, -35, Math.toRadians(135));
+                        dropYellowPixelPose = new Pose2d(48, -32, Math.toRadians(0));
                         break;
                     case MIDDLE:
-                        dropPurplePixelPose = new Pose2d(1, 1, Math.toRadians(0));
-                        dropYellowPixelPose = new Pose2d(0, 0, Math.toRadians(0));
+                        dropPurplePixelPose = new Pose2d(12, -32, Math.toRadians(0));
+                        dropYellowPixelPose = new Pose2d(48, 36,  Math.toRadians(0));
                         break;
                     case RIGHT:
-                        dropPurplePixelPose = new Pose2d(2, 2, Math.toRadians(0));
-                        dropYellowPixelPose = new Pose2d(0, 0, Math.toRadians(0));
+                        dropPurplePixelPose = new Pose2d(17, -35, Math.toRadians(45));
+                        dropYellowPixelPose = new Pose2d(48, -40, Math.toRadians(0));
                         break;
                 }
+                midwayPose1 = new Pose2d(12, -50, Math.toRadians(90));
+                midwayPose2 = new Pose2d(36, -50, Math.toRadians(0));
+                waitSecondsBeforeDrop = 2; //TODO: Adjust time to wait for alliance partner to move from board
+                parkPose = new Pose2d(46, -60, Math.toRadians(0));
+                break;
+
+            case BLUE_RIGHT:
+                initPose = new Pose2d(-36, 60, Math.toRadians(-90)); //Starting pose
+                drive = new MecanumDrive(hardwareMap, initPose);
+                switch(identifiedSpikeMarkLocation){
+                    case LEFT:
+                        dropPurplePixelPose = new Pose2d(-31, 15, Math.toRadians(45));
+                        dropYellowPixelPose = new Pose2d(48, 40, Math.toRadians(0));
+                        break;
+                    case MIDDLE:
+                        dropPurplePixelPose = new Pose2d(-36, 8, Math.toRadians(90));
+                        dropYellowPixelPose = new Pose2d(48, 36, Math.toRadians(0));
+                        break;
+                    case RIGHT:
+                        dropPurplePixelPose = new Pose2d(-41, 15, Math.toRadians(135));
+                        dropYellowPixelPose = new Pose2d(48, 32, Math.toRadians(0));
+                        break;
+                }
+                intakeStack = new Pose2d(-54, 12,Math.toRadians(180));
+                midwayPose1 = new Pose2d(-18, 12, Math.toRadians(0));
+                midwayPose2 = new Pose2d(36, 12, Math.toRadians(0));
+                waitSecondsBeforeDrop = 2; //TODO: Adjust time to wait for alliance partner to move from board
+                parkPose = new Pose2d(46, 12, Math.toRadians(0));
+                break;
+
+            case RED_LEFT:
+                initPose = new Pose2d(-36, -60, Math.toRadians(90)); //Starting pose
+                drive = new MecanumDrive(hardwareMap, initPose);
+                switch(identifiedSpikeMarkLocation){
+                    case LEFT:
+                        dropPurplePixelPose = new Pose2d(-41, -15, Math.toRadians(135));
+                        dropYellowPixelPose = new Pose2d(48, -32, Math.toRadians(0));
+                        break;
+                    case MIDDLE:
+                        dropPurplePixelPose = new Pose2d(-36, -8, Math.toRadians(-90));
+                        dropYellowPixelPose = new Pose2d(48, -36, Math.toRadians(0));
+                        break;
+                    case RIGHT:
+                        dropPurplePixelPose = new Pose2d(-31, -15, Math.toRadians(-45));
+                        dropYellowPixelPose = new Pose2d(48, -40, Math.toRadians(0));
+                        break;
+                }
+                intakeStack = new Pose2d(-54, -12,Math.toRadians(-180));
+                midwayPose1 = new Pose2d(-18, -12, Math.toRadians(0));
+                midwayPose2 = new Pose2d(36, -12, Math.toRadians(0));
+                waitSecondsBeforeDrop = 2; //TODO: Adjust time to wait for alliance partner to move from board
+                parkPose = new Pose2d(46, -12, Math.toRadians(0));
                 break;
         }
 
-        drive.pose = initPose;
+        //drive.pose = initPose;
 
         //Move robot to dropPurplePixel based on identified Spike Mark Location
         Actions.runBlocking(
                 drive.actionBuilder(drive.pose)
-                        .splineToLinearHeading(dropPurplePixelPose,0)
+                        .strafeToLinearHeading(dropPurplePixelPose.position, dropPurplePixelPose.heading)
                         .build());
 
-        //TODO : Code action to drop Pixel
+        //TODO : Code to drop Purple Pixel on Spike Mark
+        safeWaitSeconds(1);
 
-        //Move robot through interimPose1, interimPose 2 to dropYellowPixelPose
+        //For Blue Right and Red Left, intake pixel from stack
+        if (startPosition == START_POSITION.BLUE_RIGHT ||
+            startPosition == START_POSITION.RED_LEFT) {
+            Actions.runBlocking(
+                    drive.actionBuilder(drive.pose)
+                            .strafeToLinearHeading(intakeStack.position, intakeStack.heading)
+                            .build());
+
+            //TODO : Code to intake pixel from stack
+            safeWaitSeconds(1);
+        }
+
+        //Move robot to midwayPose1
         Actions.runBlocking(
                 drive.actionBuilder(drive.pose)
-                        .splineToLinearHeading(interimPose1,0)
-                        .splineToLinearHeading(interimPose2,0)
-                        .splineToLinearHeading(dropYellowPixelPose,0)
+                        .strafeToLinearHeading(midwayPose1.position, midwayPose1.heading)
                         .build());
 
-        //TODO : Code action to drop Pixel
+        //TODO: For Blue Right and Red Left, Add code to raise Stage Door to pass through
+        safeWaitSeconds(1);
 
-        //Move robot to parking
+        //Move robot to midwayPose2 and to dropYellowPixelPose
         Actions.runBlocking(
                 drive.actionBuilder(drive.pose)
-                        .splineToLinearHeading(parkPose,0)
+                        .strafeToLinearHeading(midwayPose2.position, midwayPose2.heading)
+                        .waitSeconds(waitSecondsBeforeDrop)
+                        .splineToLinearHeading(dropYellowPixelPose,Math.toRadians(90))
                         .build());
 
 
+        //TODO : Code to drop Pixel on Backdrop
+        safeWaitSeconds(1);
 
-
-
+        //Move robot to park in Backstage
+        Actions.runBlocking(
+                drive.actionBuilder(drive.pose)
+                        .strafeToLinearHeading(parkPose.position, parkPose.heading)
+                        //.splineToLinearHeading(parkPose,0)
+                        .build());
     }
 
 
@@ -259,7 +283,8 @@ public class AutonomousMode extends LinearOpMode {
         telemetry.clearAll();
         //******select start pose*****
         while(!isStopRequested()){
-            telemetry.addData("Initializing FTC Wires (ftcwires.org) AutoOnlyPark adopted for Team:","TEAM NUMBER");
+            telemetry.addData("Initializing FTC Wires (ftcwires.org) Autonomous adopted for Team:",
+                    TEAM_NAME, " ", TEAM_NUMBER);
             telemetry.addData("---------------------------------------","");
             telemetry.addData("Select Starting Position using XYAB Keys on gamepad 1:","");
             telemetry.addData("    Blue Left   ", "(X)");
@@ -287,7 +312,13 @@ public class AutonomousMode extends LinearOpMode {
         telemetry.clearAll();
     }
 
-
+    //method to wait safely with stop button working if needed. Use this instead of sleep
+    public void safeWaitSeconds(double time) {
+        ElapsedTime timer = new ElapsedTime(SECONDS);
+        timer.reset();
+        while (!isStopRequested() && timer.time() < time) {
+        }
+    }
 
     /**
      * Initialize the TensorFlow Object Detection processor.

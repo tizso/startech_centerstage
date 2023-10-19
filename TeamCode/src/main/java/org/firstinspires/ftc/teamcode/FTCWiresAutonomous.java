@@ -29,13 +29,9 @@
 
 package org.firstinspires.ftc.teamcode;
 
-import static com.qualcomm.robotcore.util.ElapsedTime.Resolution.MILLISECONDS;
 import static com.qualcomm.robotcore.util.ElapsedTime.Resolution.SECONDS;
 
-import static org.firstinspires.ftc.vision.VisionPortal.CameraState.CAMERA_DEVICE_CLOSED;
-
 import com.acmerobotics.roadrunner.Pose2d;
-import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -52,8 +48,8 @@ import java.util.List;
 /**
  * FTC WIRES Autonomous Example for only vision detection using tensorflow and park
  */
-@Autonomous(name = "FTC Wires AutoRotated Mode", group = "00-Autonomous", preselectTeleOp = "FTC Wires TeleOp")
-public class AutoRotated extends LinearOpMode {
+@Autonomous(name = "FTC Wires Autonomous Mode", group = "00-Autonomous", preselectTeleOp = "FTC Wires TeleOp")
+public class FTCWiresAutonomous extends LinearOpMode {
 
     public static String TEAM_NAME = "EDIT TEAM NAME"; //TODO: Enter team Name
     public static int TEAM_NUMBER = 0; //TODO: Enter team Number

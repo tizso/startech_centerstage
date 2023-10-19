@@ -14,7 +14,7 @@ import org.firstinspires.ftc.teamcode.tuning.TuningOpModes;
  */
 
 @TeleOp(name = "FTC Wires TeleOp", group = "00-Teleop")
-public class TeleOpMode extends LinearOpMode {
+public class FTCWiresTeleOpMode extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         double SLOW_DOWN_FACTOR = 0.5; //TODO Adjust to driver comfort

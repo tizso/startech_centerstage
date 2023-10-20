@@ -54,7 +54,7 @@ public final class MecanumDrive {
 
         //TODO Step 6 (Only for DriveEncoder Localizer) Set value of lateralInPerTick after running LateralPushTest
         //TODO Step 8 (Only for DeadWheel Localizer) Set value of lateralInPerTick after running LateralRampLogger
-        public double lateralInPerTick = 0.02339181286; //1, 126/5386.5
+        public double lateralInPerTick = 0.01926449306;//0.02339181286; //1, 126/5386.5
 
         //TODO Step 10 (Only for DriveEncoder Localizer) Set value of trackWidthTicks after running AngularRampLogger
         //TODO Step 11 (Only for DeadWheel Localizer) Set value of trackWidthTicks after running AngularRampLogger

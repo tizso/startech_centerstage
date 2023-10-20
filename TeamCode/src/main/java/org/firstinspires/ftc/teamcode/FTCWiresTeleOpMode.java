@@ -43,9 +43,10 @@ public class FTCWiresTeleOpMode extends LinearOpMode {
                 //telemetry.addData("RF Encoder", drive.rightFront.getCurrentPosition());
                 //telemetry.addData("RB Encoder", drive.rightBack.getCurrentPosition());
 
+                telemetry.addLine("Current Pose");
                 telemetry.addData("x", drive.pose.position.x);
                 telemetry.addData("y", drive.pose.position.y);
-                telemetry.addData("heading", drive.pose.heading);
+                telemetry.addData("heading", Math.toDegrees(drive.pose.heading.log()));
                 telemetry.update();
             }
         } else if (TuningOpModes.DRIVE_CLASS.equals(TankDrive.class)) {

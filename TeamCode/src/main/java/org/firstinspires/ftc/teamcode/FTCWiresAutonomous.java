@@ -290,7 +290,7 @@ public class FTCWiresAutonomous extends LinearOpMode {
                     TEAM_NAME, " ", TEAM_NUMBER);
             telemetry.addData("---------------------------------------","");
             telemetry.addData("Select Starting Position using XYAB on Logitech (or ▢ΔOX on Playstayion) on gamepad 1:","");
-            telemetry.addData("    Blue Left   ", "(X / )▢)");
+            telemetry.addData("    Blue Left   ", "(X / ▢)");
             telemetry.addData("    Blue Right ", "(Y / Δ)");
             telemetry.addData("    Red Left    ", "(B / O)");
             telemetry.addData("    Red Right  ", "(A / X)");

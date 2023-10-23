@@ -140,7 +140,7 @@ public class FTCWiresAutonomous extends LinearOpMode {
                         dropYellowPixelPose = new Pose2d(23, 36, Math.toRadians(-90));
                         break;
                     case MIDDLE:
-                        dropPurplePixelPose = new Pose2d(33, 3, Math.toRadians(0));
+                        dropPurplePixelPose = new Pose2d(30, 3, Math.toRadians(0));
                         dropYellowPixelPose = new Pose2d(30, 36,  Math.toRadians(-90));
                         break;
                     case RIGHT:
@@ -161,7 +161,7 @@ public class FTCWiresAutonomous extends LinearOpMode {
                         dropYellowPixelPose = new Pose2d(21, -36, Math.toRadians(90));
                         break;
                     case MIDDLE:
-                        dropPurplePixelPose = new Pose2d(33, -3, Math.toRadians(0));
+                        dropPurplePixelPose = new Pose2d(30, -3, Math.toRadians(0));
                         dropYellowPixelPose = new Pose2d(29, -36,  Math.toRadians(90));
                         break;
                     case RIGHT:
@@ -182,7 +182,7 @@ public class FTCWiresAutonomous extends LinearOpMode {
                         dropYellowPixelPose = new Pose2d(27, 86, Math.toRadians(-90));
                         break;
                     case MIDDLE:
-                        dropPurplePixelPose = new Pose2d(33, -3, Math.toRadians(0));
+                        dropPurplePixelPose = new Pose2d(30, -3, Math.toRadians(0));
                         dropYellowPixelPose = new Pose2d(34, 86, Math.toRadians(-90));
                         break;
                     case RIGHT:
@@ -206,7 +206,7 @@ public class FTCWiresAutonomous extends LinearOpMode {
                         dropYellowPixelPose = new Pose2d(37, -86, Math.toRadians(90));
                         break;
                     case MIDDLE:
-                        dropPurplePixelPose = new Pose2d(33, -3, Math.toRadians(0));
+                        dropPurplePixelPose = new Pose2d(30, -3, Math.toRadians(0));
                         dropYellowPixelPose = new Pose2d(29, -86, Math.toRadians(90));
                         break;
                     case RIGHT:
@@ -219,11 +219,9 @@ public class FTCWiresAutonomous extends LinearOpMode {
                 intakeStack = new Pose2d(52, 19,Math.toRadians(90));
                 midwayPose2 = new Pose2d(52, -62, Math.toRadians(90));
                 waitSecondsBeforeDrop = 2; //TODO: Adjust time to wait for alliance partner to move from board
-                parkPose = new Pose2d(46, -84, Math.toRadians(90));
+                parkPose = new Pose2d(50, -84, Math.toRadians(90));
                 break;
         }
-
-        //drive.pose = initPose;
 
         //Move robot to dropPurplePixel based on identified Spike Mark Location
         Actions.runBlocking(
@@ -342,6 +340,9 @@ public class FTCWiresAutonomous extends LinearOpMode {
                 BuiltinCameraDirection.BACK, tfod);
         }
 
+        // Set confidence threshold for TFOD recognitions, at any time.
+        tfod.setMinResultConfidence(0.095f);
+
     }   // end method initTfod()
 
     /**
@@ -371,7 +372,7 @@ public class FTCWiresAutonomous extends LinearOpMode {
 
             if (startPosition == START_POSITION.RED_LEFT || startPosition == START_POSITION.BLUE_LEFT) {
                 if (recognition.getLabel() == "Pixel") {
-                    if (x < 100) {
+                    if (x < 200) {
                         identifiedSpikeMarkLocation = IDENTIFIED_SPIKE_MARK_LOCATION.LEFT;
                     } else {
                         identifiedSpikeMarkLocation = IDENTIFIED_SPIKE_MARK_LOCATION.MIDDLE;
@@ -379,7 +380,7 @@ public class FTCWiresAutonomous extends LinearOpMode {
                 }
             } else { //RED_RIGHT or BLUE_RIGHT
                 if (recognition.getLabel() == "Pixel") {
-                    if (x < 100) {
+                    if (x < 200) {
                         identifiedSpikeMarkLocation = IDENTIFIED_SPIKE_MARK_LOCATION.MIDDLE;
                     } else {
                         identifiedSpikeMarkLocation = IDENTIFIED_SPIKE_MARK_LOCATION.RIGHT;

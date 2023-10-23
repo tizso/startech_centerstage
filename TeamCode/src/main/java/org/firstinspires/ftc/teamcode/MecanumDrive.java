@@ -128,13 +128,13 @@ public final class MecanumDrive {
             rightBack = new OverflowEncoder(new RawEncoder(MecanumDrive.this.rightBack));
             rightFront = new OverflowEncoder(new RawEncoder(MecanumDrive.this.rightFront));
 
-            //TODO Step 4.1 Run MecanumDirectionDebugger Tuning OpMode to set motor direction correctly
+            //TODO Step 4.2 Run MecanumDirectionDebugger Tuning OpMode to set motor direction correctly
             //Uncomment the lines for which the motorDirection need to be reversed to ensure all motors run forward in test
             //leftFront.setDirection(DcMotorEx.Direction.REVERSE);
             //leftBack.setDirection(DcMotorEx.Direction.REVERSE);
             rightBack.setDirection(DcMotorEx.Direction.REVERSE);
             rightFront.setDirection(DcMotorEx.Direction.REVERSE);
-            //TODO End Step 4.1
+            //TODO End Step 4.2
 
             lastLeftFrontPos = leftFront.getPositionAndVelocity().position;
             lastLeftBackPos = leftBack.getPositionAndVelocity().position;
@@ -203,14 +203,14 @@ public final class MecanumDrive {
         rightFront = hardwareMap.get(DcMotorEx.class, "rightFront");
         //TODO End Step 1
 
-        //TODO Step 4 Run MecanumDirectionDebugger Tuning OpMode to set motor direction correctly
+        //TODO Step 4.1 Run MecanumDirectionDebugger Tuning OpMode to set motor direction correctly
         //Uncomment the lines for which the motorDirection need to be reversed to ensure all motors run forward in test
         //leftFront.setDirection(DcMotorEx.Direction.REVERSE);
         //leftBack.setDirection(DcMotorEx.Direction.REVERSE);
         rightFront.setDirection(DcMotorEx.Direction.REVERSE);
         rightBack.setDirection(DcMotorEx.Direction.REVERSE);
-        //TODO Make the same update in DriveLocalizer() function. Search for Step 4.1
-        //TODO End Step 4
+        //TODO Make the same update in DriveLocalizer() function. Search for Step 4.2
+        //TODO End Step 4.1
 
 
         leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);

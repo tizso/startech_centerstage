@@ -101,12 +101,6 @@ public class FTCWiresAutonomous extends LinearOpMode {
             telemetry.update();
         }
 
-        //Stop Vision process
-        /*if (visionPortal.getCameraState() != CAMERA_DEVICE_CLOSED) {
-            //visionPortal.stopStreaming();
-            visionPortal.close();
-        }*/
-
         //Game Play Button  is pressed
         if (opModeIsActive() && !isStopRequested()) {
             //Build parking trajectory based on last detected target by vision
@@ -124,7 +118,7 @@ public class FTCWiresAutonomous extends LinearOpMode {
         Pose2d intakeStack = new Pose2d(0,0,0);
         Pose2d midwayPose2 = new Pose2d(0,0,0);
         Pose2d dropYellowPixelPose = new Pose2d(0, 0, 0);
-        Pose2d parkPose = new Pose2d(0, 0, 0);
+        Pose2d parkPose = new Pose2d(0,0, 0);
         double waitSecondsBeforeDrop = 0;
         MecanumDrive drive = new MecanumDrive(hardwareMap, initPose);
 

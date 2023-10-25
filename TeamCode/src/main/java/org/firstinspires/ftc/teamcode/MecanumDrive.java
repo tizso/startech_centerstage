@@ -50,10 +50,12 @@ public final class MecanumDrive {
     public static class Params {
         // drive model parameters
         //TODO Step 5 Set value of inPerTick after running ForwardPushTest
+        //TODO Step 14 Make value of inPerTick accurate after running LocalizationTest
         public double inPerTick = 0;
 
         //TODO Step 6 (Only for DriveEncoder Localizer) Set value of lateralInPerTick after running LateralPushTest
         //TODO Step 8 (Only for DeadWheel Localizer) Set value of lateralInPerTick after running LateralRampLogger
+        //TODO Step 14 Make value of lateralInPerTick accurate after running LocalizationTest
         public double lateralInPerTick = 1;
 
         //TODO Step 10 (Only for DriveEncoder Localizer) Set value of trackWidthTicks after running AngularRampLogger
@@ -79,7 +81,7 @@ public final class MecanumDrive {
         public double maxAngAccel = Math.PI;
 
         // path controller gains
-        //TODO Step 12 Set value of Gains after running ManualFeedbackTuner
+        //TODO Step 13 Set value of Gains after running ManualFeedbackTuner
         public double axialGain = 0.0;
         public double lateralGain = 0.0;
         public double headingGain = 0.0; // shared with turn

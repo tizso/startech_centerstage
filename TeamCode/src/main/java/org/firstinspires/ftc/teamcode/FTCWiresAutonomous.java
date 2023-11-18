@@ -31,9 +31,12 @@ package org.firstinspires.ftc.teamcode;
 
 import static com.qualcomm.robotcore.util.ElapsedTime.Resolution.SECONDS;
 
+import android.util.Size;
+
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -41,6 +44,7 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDir
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.vision.VisionPortal;
+import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 import org.firstinspires.ftc.vision.tfod.TfodProcessor;
 
 import java.util.List;
@@ -48,13 +52,29 @@ import java.util.List;
 /**
  * FTC WIRES Autonomous Example for only vision detection using tensorflow and park
  */
-@Autonomous(name = "FTC Wires Autonomous Mode", group = "00-Autonomous", preselectTeleOp = "FTC Wires TeleOp")
+@Disabled
+@Autonomous(name = "Autonomous StarTech old", group = "00-Autonomous", preselectTeleOp = "StarTech")
 public class FTCWiresAutonomous extends LinearOpMode {
 
-    public static String TEAM_NAME = "EDIT TEAM NAME"; //TODO: Enter team Name
-    public static int TEAM_NUMBER = 0; //TODO: Enter team Number
+    public static String TEAM_NAME = "StarTech"; //TODO: Enter team Name
+    public static int TEAM_NUMBER = 18338; //TODO: Enter team Number
 
     private static final boolean USE_WEBCAM = true;  // true for webcam, false for phone camera
+
+    /**
+     * The variable to store our instance of the AprilTag processor.
+     */
+    private AprilTagProcessor aprilTag;
+
+    private static final String TFOD_MODEL_FILE = "/sdcard/FIRST/tflitemodels/startech2.tflite";
+
+    /**
+     * If we use default object, Pixels, change the labels name from "stratech" to "Pixel"
+     * */
+    private static final String[] LABELS = {
+            "StarTechBLue",
+            "StarTechRed"
+    };
 
     //Vision parameters
     private TfodProcessor tfod;
@@ -280,14 +300,14 @@ public class FTCWiresAutonomous extends LinearOpMode {
         telemetry.clearAll();
         //******select start pose*****
         while(!isStopRequested()){
-            telemetry.addData("Initializing FTC Wires (ftcwires.org) Autonomous adopted for Team:",
+            telemetry.addData("Initializing StarTech Autonomous:",
                     TEAM_NAME, " ", TEAM_NUMBER);
             telemetry.addData("---------------------------------------","");
-            telemetry.addData("Select Starting Position using XYAB on Logitech (or ▢ΔOX on Playstayion) on gamepad 1:","");
-            telemetry.addData("    Blue Left   ", "(X / ▢)");
-            telemetry.addData("    Blue Right ", "(Y / Δ)");
-            telemetry.addData("    Red Left    ", "(B / O)");
-            telemetry.addData("    Red Right  ", "(A / X)");
+            telemetry.addData("Select Starting Position using XYAB on Logitech on gamepad 1:","");
+            telemetry.addData("    Blue Left   ", "(X");
+            telemetry.addData("    Blue Right ", "(Y)");
+            telemetry.addData("    Red Left    ", "(B)");
+            telemetry.addData("    Red Right  ", "(A)");
             if(gamepad1.x){
                 startPosition = START_POSITION.BLUE_LEFT;
                 break;
@@ -321,21 +341,51 @@ public class FTCWiresAutonomous extends LinearOpMode {
      * Initialize the TensorFlow Object Detection processor.
      */
     private void initTfod() {
+        // -----------------------------------------------------------------------------------------
+        // AprilTag Configuration
+        // -----------------------------------------------------------------------------------------
+        double fx = 946.461;
+        double fy = 946.136;
+        double cx = 312.211;
+        double cy = 211.465;
+        aprilTag = new AprilTagProcessor.Builder()
+                .setLensIntrinsics(fx, fy, cx, cy)
+                .build();
 
-        // Create the TensorFlow processor the easy way.
-        tfod = TfodProcessor.easyCreateWithDefaults();
+        tfod = new TfodProcessor.Builder()
+                // With the following lines commented out, the default TfodProcessor Builder
+                // will load the default model for the season. To define a custom model to load,
+                // choose one of the following:
+                //   Use setModelAssetName() if the custom TF Model is built in as an asset (AS only).
+                //   Use setModelFileName() if you have downloaded a custom team model to the Robot Controller.
+                //.setModelAssetName(TFOD_MODEL_ASSET)
+                .setModelFileName(TFOD_MODEL_FILE)
+
+                // The following default settings are available to un-comment and edit as needed to
+                // set parameters for custom models.
+                .setModelLabels(LABELS)
+                .setIsModelTensorFlow2(true)
+                .setIsModelQuantized(true)
+                .setModelInputSize(1200)
+                .setModelAspectRatio(16.0 / 9.0)
+                .build();
+        tfod.setMinResultConfidence(0.095f);
 
         // Create the vision portal the easy way.
         if (USE_WEBCAM) {
-            visionPortal = VisionPortal.easyCreateWithDefaults(
-                hardwareMap.get(WebcamName.class, "Webcam 1"), tfod);
+            visionPortal = new VisionPortal.Builder()
+                    .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"))
+                    .addProcessors(tfod, aprilTag)
+                    .enableLiveView(true)
+                    .setCameraResolution(new Size(640, 480))
+                    .build();
         } else {
-            visionPortal = VisionPortal.easyCreateWithDefaults(
-                BuiltinCameraDirection.BACK, tfod);
+            visionPortal = new VisionPortal.Builder()
+                    .setCamera(BuiltinCameraDirection.BACK)
+                    .addProcessors(tfod, aprilTag)
+                    .build();
         }
 
-        // Set confidence threshold for TFOD recognitions, at any time.
-        tfod.setMinResultConfidence(0.095f);
 
     }   // end method initTfod()
 
@@ -365,7 +415,7 @@ public class FTCWiresAutonomous extends LinearOpMode {
             telemetry.addData("- Size", "%.0f x %.0f", recognition.getWidth(), recognition.getHeight());
 
             if (startPosition == START_POSITION.RED_LEFT || startPosition == START_POSITION.BLUE_LEFT) {
-                if (recognition.getLabel() == "Pixel") {
+                if (recognition.getLabel() == "StarTechBLue" || recognition.getLabel() == "StarTechRed") {
                     if (x < 200) {
                         identifiedSpikeMarkLocation = IDENTIFIED_SPIKE_MARK_LOCATION.LEFT;
                     } else {
@@ -373,7 +423,7 @@ public class FTCWiresAutonomous extends LinearOpMode {
                     }
                 }
             } else { //RED_RIGHT or BLUE_RIGHT
-                if (recognition.getLabel() == "Pixel") {
+                if (recognition.getLabel() == "StarTechBLue" || recognition.getLabel() == "StarTechRed") {
                     if (x < 200) {
                         identifiedSpikeMarkLocation = IDENTIFIED_SPIKE_MARK_LOCATION.MIDDLE;
                     } else {

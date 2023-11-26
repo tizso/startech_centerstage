@@ -21,8 +21,8 @@ import java.util.List;
 
 @Autonomous(name = "BuleRight", group = "00-Autonomous", preselectTeleOp = "StarTech")
 public class AutonomBlueRight extends LinearOpMode {
-    public static String TEAM_NAME = "StarTech"; //TODO: Enter team Name
-    public static int TEAM_NUMBER = 18338; //TODO: Enter team Number
+    public static String TEAM_NAME = "StarTech";
+    public static int TEAM_NUMBER = 18338;
 
     private static final boolean USE_WEBCAM = true;  // true for webcam, false for phone camera
 

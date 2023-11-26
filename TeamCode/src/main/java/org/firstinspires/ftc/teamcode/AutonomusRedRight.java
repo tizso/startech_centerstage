@@ -6,6 +6,7 @@ import android.util.Size;
 
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -17,10 +18,10 @@ import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 import org.firstinspires.ftc.vision.tfod.TfodProcessor;
 
 import java.util.List;
-
+@Autonomous(name = "RedRight", group = "00-Autonomous", preselectTeleOp = "StarTech")
 public class AutonomusRedRight extends LinearOpMode {
-    public static String TEAM_NAME = "StarTech"; //TODO: Enter team Name
-    public static int TEAM_NUMBER = 18338; //TODO: Enter team Number
+    public static String TEAM_NAME = "StarTech";
+    public static int TEAM_NUMBER = 18338;
 
     private static final boolean USE_WEBCAM = true;  // true for webcam, false for phone camera
 

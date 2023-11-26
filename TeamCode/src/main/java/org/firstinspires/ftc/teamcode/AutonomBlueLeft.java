@@ -8,6 +8,9 @@ import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
@@ -21,8 +24,14 @@ import java.util.List;
 
 @Autonomous(name = "BuleLeft", group = "00-Autonomous", preselectTeleOp = "StarTech")
 public class AutonomBlueLeft extends LinearOpMode {
-    public static String TEAM_NAME = "StarTech"; //TODO: Enter team Name
-    public static int TEAM_NUMBER = 18338; //TODO: Enter team Number
+    public static String TEAM_NAME = "StarTech";
+    public static int TEAM_NUMBER = 18338;
+
+    private DcMotor arm;
+    private DcMotor colector;
+    private Servo clawLeft;
+    private Servo clawRight;
+    private Servo clawArm;
 
     private static final boolean USE_WEBCAM = true;  // true for webcam, false for phone camera
 
@@ -56,8 +65,29 @@ public class AutonomBlueLeft extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
 
+
+
         //Activate Camera Vision that uses TensorFlow for pixel detection
         initTfod();
+
+        arm = hardwareMap.get(DcMotor.class, "arm");
+        arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        //colector
+        colector = hardwareMap.get(DcMotor.class, "colector");
+        colector.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        clawLeft  = hardwareMap.get(Servo.class, "clawLeft");
+        clawRight  = hardwareMap.get(Servo.class, "clawRight");
+        clawArm  = hardwareMap.get(Servo.class, "clawArm");
+
+        clawArm.setPosition(0.38);
+        clawLeft.setPosition(0.4);
+        clawRight.setPosition(0.6);
+        arm.setDirection(DcMotorEx.Direction.FORWARD);
+        arm.setTargetPosition(100);
+        arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        arm.setPower(0.9);
+        sleep(200);
+
 
         // Wait for the DS start button to be touched.
         telemetry.addData("DS preview on/off", "3 dots, Camera Stream");
@@ -102,8 +132,8 @@ public class AutonomBlueLeft extends LinearOpMode {
                 dropYellowPixelPose = new Pose2d(23, 36, Math.toRadians(-90));
                 break;
             case MIDDLE:
-                dropPurplePixelPose = new Pose2d(30, 3, Math.toRadians(0));
-                dropYellowPixelPose = new Pose2d(30, 36,  Math.toRadians(-90));
+                dropPurplePixelPose = new Pose2d(26, 3, Math.toRadians(0));
+                dropYellowPixelPose = new Pose2d(30, 36,  Math.toRadians(-83));
                 break;
             case RIGHT:
                 dropPurplePixelPose = new Pose2d(30, -9, Math.toRadians(-45));
@@ -140,9 +170,28 @@ public class AutonomBlueLeft extends LinearOpMode {
                         .splineToLinearHeading(dropYellowPixelPose,0)
                         .build());
 
-
-        //TODO : Code to drop Pixel on Backdrop
+        arm.setDirection(DcMotorEx.Direction.FORWARD);
+        arm.setTargetPosition(1500);
+        arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        arm.setPower(0.7);
+        clawArm.setPosition(0.25);
         safeWaitSeconds(1);
+        clawRight.setPosition(0.2);
+        clawLeft.setPosition(0.8);
+
+        safeWaitSeconds(0.5);
+        clawRight.setPosition(0.8);
+        clawLeft.setPosition(0.2);
+        clawArm.setPosition(0.38);
+
+        safeWaitSeconds(2);
+
+        arm.setDirection(DcMotorEx.Direction.FORWARD);
+        arm.setTargetPosition(100);
+        arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        arm.setPower(0.7);
+        //TODO : Code to drop Pixel on Backdrop
+        safeWaitSeconds(5);
 
         //Move robot to park in Backstage
         Actions.runBlocking(

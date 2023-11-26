@@ -10,7 +10,6 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
@@ -27,11 +26,7 @@ public class AutonomBlueLeft extends LinearOpMode {
     public static String TEAM_NAME = "StarTech";
     public static int TEAM_NUMBER = 18338;
 
-    private DcMotor arm;
-    private DcMotor colector;
-    private Servo clawLeft;
-    private Servo clawRight;
-    private Servo clawArm;
+    HardwareBox robot = new HardwareBox();
 
     private static final boolean USE_WEBCAM = true;  // true for webcam, false for phone camera
 
@@ -65,29 +60,18 @@ public class AutonomBlueLeft extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
 
-
-
         //Activate Camera Vision that uses TensorFlow for pixel detection
         initTfod();
-
-        arm = hardwareMap.get(DcMotor.class, "arm");
-        arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.init(hardwareMap);
+        robot.arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         //colector
-        colector = hardwareMap.get(DcMotor.class, "colector");
-        colector.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        clawLeft  = hardwareMap.get(Servo.class, "clawLeft");
-        clawRight  = hardwareMap.get(Servo.class, "clawRight");
-        clawArm  = hardwareMap.get(Servo.class, "clawArm");
+        robot.colector.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        clawArm.setPosition(0.38);
-        clawLeft.setPosition(0.4);
-        clawRight.setPosition(0.6);
-        arm.setDirection(DcMotorEx.Direction.FORWARD);
-        arm.setTargetPosition(100);
-        arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        arm.setPower(0.9);
+        robot.arm.setDirection(DcMotorEx.Direction.FORWARD);
+        robot.arm.setTargetPosition(100);
+        robot.arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.arm.setPower(0.9);
         sleep(200);
-
 
         // Wait for the DS start button to be touched.
         telemetry.addData("DS preview on/off", "3 dots, Camera Stream");
@@ -170,28 +154,28 @@ public class AutonomBlueLeft extends LinearOpMode {
                         .splineToLinearHeading(dropYellowPixelPose,0)
                         .build());
 
-        arm.setDirection(DcMotorEx.Direction.FORWARD);
-        arm.setTargetPosition(1500);
-        arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        arm.setPower(0.7);
-        clawArm.setPosition(0.25);
+        robot.arm.setDirection(DcMotorEx.Direction.FORWARD);
+        robot.arm.setTargetPosition(1500);
+        robot.arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.arm.setPower(0.7);
+        robot.clawArm.setPosition(0.25);
         safeWaitSeconds(1);
-        clawRight.setPosition(0.2);
-        clawLeft.setPosition(0.8);
+        robot.clawRight.setPosition(0.2);
+        robot.clawLeft.setPosition(0.8);
 
         safeWaitSeconds(0.5);
-        clawRight.setPosition(0.8);
-        clawLeft.setPosition(0.2);
-        clawArm.setPosition(0.38);
+        robot.clawRight.setPosition(0.8);
+        robot.clawLeft.setPosition(0.2);
+        robot.clawArm.setPosition(0.38);
 
         safeWaitSeconds(2);
 
-        arm.setDirection(DcMotorEx.Direction.FORWARD);
-        arm.setTargetPosition(100);
-        arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        arm.setPower(0.7);
+        robot.arm.setDirection(DcMotorEx.Direction.FORWARD);
+        robot.arm.setTargetPosition(100);
+        robot.arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.arm.setPower(0.7);
         //TODO : Code to drop Pixel on Backdrop
-        safeWaitSeconds(5);
+        safeWaitSeconds(1);
 
         //Move robot to park in Backstage
         Actions.runBlocking(
@@ -242,7 +226,7 @@ public class AutonomBlueLeft extends LinearOpMode {
                 .setModelInputSize(1200)
                 .setModelAspectRatio(16.0 / 9.0)
                 .build();
-        tfod.setMinResultConfidence(0.095f);
+        tfod.setMinResultConfidence(0.90f);
 
         // Create the vision portal the easy way.
         if (USE_WEBCAM) {

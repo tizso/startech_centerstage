@@ -212,7 +212,7 @@ public class AutonomBlueRight extends LinearOpMode {
                 .setModelInputSize(1200)
                 .setModelAspectRatio(16.0 / 9.0)
                 .build();
-        tfod.setMinResultConfidence(0.095f);
+        tfod.setMinResultConfidence(0.90f);
 
         // Create the vision portal the easy way.
         if (USE_WEBCAM) {

@@ -8,6 +8,8 @@ import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
@@ -22,6 +24,8 @@ import java.util.List;
 public class AutonomusRedRight extends LinearOpMode {
     public static String TEAM_NAME = "StarTech";
     public static int TEAM_NUMBER = 18338;
+
+    HardwareBox robot = new HardwareBox();
 
     private static final boolean USE_WEBCAM = true;  // true for webcam, false for phone camera
 
@@ -57,6 +61,16 @@ public class AutonomusRedRight extends LinearOpMode {
 
         //Activate Camera Vision that uses TensorFlow for pixel detection
         initTfod();
+        robot.init(hardwareMap);
+        robot.arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        //colector
+        robot.colector.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        robot.arm.setDirection(DcMotorEx.Direction.FORWARD);
+        robot.arm.setTargetPosition(100);
+        robot.arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.arm.setPower(0.9);
+        sleep(200);
 
         // Wait for the DS start button to be touched.
         telemetry.addData("DS preview on/off", "3 dots, Camera Stream");
@@ -85,10 +99,7 @@ public class AutonomusRedRight extends LinearOpMode {
         Pose2d moveBeyondTrussPose = new Pose2d(0,0,0);
         Pose2d dropPurplePixelPose = new Pose2d(0, 0, 0);
         Pose2d midwayPose1 = new Pose2d(0,0,0);
-        Pose2d midwayPose1a = new Pose2d(0,0,0);
-        Pose2d intakeStack = new Pose2d(0,0,0);
-        Pose2d midwayPose2 = new Pose2d(0,0,0);
-        Pose2d dropYellowPixelPose = new Pose2d(0, 0, 0);
+         Pose2d dropYellowPixelPose = new Pose2d(0, 0, 0);
         Pose2d parkPose = new Pose2d(0,0, 0);
         double waitSecondsBeforeDrop = 0;
         MecanumDrive drive = new MecanumDrive(hardwareMap, initPose);
@@ -103,7 +114,7 @@ public class AutonomusRedRight extends LinearOpMode {
                 dropYellowPixelPose = new Pose2d(21, -36, Math.toRadians(90));
                 break;
             case MIDDLE:
-                dropPurplePixelPose = new Pose2d(30, -3, Math.toRadians(0));
+                dropPurplePixelPose = new Pose2d(26, -3, Math.toRadians(0));
                 dropYellowPixelPose = new Pose2d(29, -36,  Math.toRadians(90));
                 break;
             case RIGHT:
@@ -139,6 +150,27 @@ public class AutonomusRedRight extends LinearOpMode {
                         .setReversed(true)
                         .splineToLinearHeading(dropYellowPixelPose,0)
                         .build());
+
+        robot.arm.setDirection(DcMotorEx.Direction.FORWARD);
+        robot.arm.setTargetPosition(1500);
+        robot.arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.arm.setPower(0.7);
+        robot.clawArm.setPosition(0.25);
+        safeWaitSeconds(1);
+        robot.clawRight.setPosition(0.2);
+        robot.clawLeft.setPosition(0.8);
+
+        safeWaitSeconds(0.5);
+        robot.clawRight.setPosition(0.8);
+        robot.clawLeft.setPosition(0.2);
+        robot.clawArm.setPosition(0.38);
+
+        safeWaitSeconds(2);
+
+        robot.arm.setDirection(DcMotorEx.Direction.FORWARD);
+        robot.arm.setTargetPosition(100);
+        robot.arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.arm.setPower(0.7);
 
 
         //TODO : Code to drop Pixel on Backdrop
@@ -192,7 +224,7 @@ public class AutonomusRedRight extends LinearOpMode {
                 .setModelInputSize(1200)
                 .setModelAspectRatio(16.0 / 9.0)
                 .build();
-        tfod.setMinResultConfidence(0.095f);
+        tfod.setMinResultConfidence(0.90f);
 
         // Create the vision portal the easy way.
         if (USE_WEBCAM) {

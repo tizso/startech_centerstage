@@ -8,6 +8,8 @@ import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
@@ -23,6 +25,8 @@ import java.util.List;
 public class AutonomusRedLeft extends LinearOpMode {
     public static String TEAM_NAME = "StarTech";
     public static int TEAM_NUMBER = 18338;
+
+    HardwareBox robot = new HardwareBox();
 
     private static final boolean USE_WEBCAM = true;  // true for webcam, false for phone camera
 
@@ -57,6 +61,16 @@ public class AutonomusRedLeft extends LinearOpMode {
 
         //Activate Camera Vision that uses TensorFlow for pixel detection
         initTfod();
+        robot.init(hardwareMap);
+        robot.arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        //colector
+        robot.colector.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        robot.arm.setDirection(DcMotorEx.Direction.FORWARD);
+        robot.arm.setTargetPosition(100);
+        robot.arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.arm.setPower(0.9);
+        sleep(200);
 
         // Wait for the DS start button to be touched.
         telemetry.addData("DS preview on/off", "3 dots, Camera Stream");
@@ -210,7 +224,7 @@ public class AutonomusRedLeft extends LinearOpMode {
                 .setModelInputSize(1200)
                 .setModelAspectRatio(16.0 / 9.0)
                 .build();
-        tfod.setMinResultConfidence(0.095f);
+        tfod.setMinResultConfidence(0.90f);
 
         // Create the vision portal the easy way.
         if (USE_WEBCAM) {

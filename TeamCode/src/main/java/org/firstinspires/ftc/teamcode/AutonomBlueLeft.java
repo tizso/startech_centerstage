@@ -10,6 +10,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
@@ -68,7 +69,7 @@ public class AutonomBlueLeft extends LinearOpMode {
         robot.colector.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         robot.arm.setDirection(DcMotorEx.Direction.FORWARD);
-        robot.arm.setTargetPosition(100);
+        robot.arm.setTargetPosition(20);
         robot.arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.arm.setPower(0.9);
         sleep(200);
@@ -101,7 +102,8 @@ public class AutonomBlueLeft extends LinearOpMode {
         Pose2d dropPurplePixelPose = new Pose2d(0, 0, 0);
         Pose2d midwayPose1 = new Pose2d(0,0,0);
         Pose2d dropYellowPixelPose = new Pose2d(0, 0, 0);
-        Pose2d parkPose = new Pose2d(0,0, 0);
+        Pose2d parkPose1 = new Pose2d(0,0, 0);
+        Pose2d parkPose2 = new Pose2d(0,0, 0);
         double waitSecondsBeforeDrop = 0;
         MecanumDrive drive = new MecanumDrive(hardwareMap, initPose);
 
@@ -112,21 +114,28 @@ public class AutonomBlueLeft extends LinearOpMode {
         drive = new MecanumDrive(hardwareMap, initPose);
         switch(identifiedSpikeMarkLocation){
             case LEFT:
-                dropPurplePixelPose = new Pose2d(26, 8, Math.toRadians(0));
-                dropYellowPixelPose = new Pose2d(23, 36, Math.toRadians(-90));
+                dropPurplePixelPose = new Pose2d(17, 11, Math.toRadians(0));
+                dropYellowPixelPose = new Pose2d(51, 36, Math.toRadians(-83));
                 break;
             case MIDDLE:
-                dropPurplePixelPose = new Pose2d(26, 3, Math.toRadians(0));
-                dropYellowPixelPose = new Pose2d(30, 36,  Math.toRadians(-83));
+                dropPurplePixelPose = new Pose2d(27, 2, Math.toRadians(0));
+                dropYellowPixelPose = new Pose2d(45, 36.5,  Math.toRadians(-81));
                 break;
             case RIGHT:
-                dropPurplePixelPose = new Pose2d(30, -9, Math.toRadians(-45));
-                dropYellowPixelPose = new Pose2d(37, 36, Math.toRadians(-90));
+                dropPurplePixelPose = new Pose2d(24, -4, Math.toRadians(-45));
+                dropYellowPixelPose = new Pose2d(29, 35, Math.toRadians(-74));
                 break;
         }
-        midwayPose1 = new Pose2d(14, 13, Math.toRadians(-45));
+        midwayPose1 = new Pose2d(10, 13, Math.toRadians(-45));
         waitSecondsBeforeDrop = 2; //TODO: Adjust time to wait for alliance partner to move from board
-        parkPose = new Pose2d(8, 30, Math.toRadians(-90));
+
+        //parking left side
+        parkPose1 = new Pose2d(0, 30, Math.toRadians(-90));
+        parkPose2 = new Pose2d(0, 40, Math.toRadians(-90));
+
+        //parking right side
+        /*parkPose1 = new Pose2d(60, 30, Math.toRadians(-90));
+        parkPose2 = new Pose2d(60, 35, Math.toRadians(-90));*/
 
 
         //Move robot to dropPurplePixel based on identified Spike Mark Location
@@ -137,6 +146,12 @@ public class AutonomBlueLeft extends LinearOpMode {
                         .build());
 
         //TODO : Code to drop Purple Pixel on Spike Mark
+        safeWaitSeconds(1);
+        robot.colector.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        robot.colector.setDirection(DcMotorEx.Direction.FORWARD);
+        robot.colector.setPower(0.3);
+        safeWaitSeconds(0.7);
+        robot.colector.setPower(0);
         safeWaitSeconds(1);
 
         //Move robot to midwayPose1
@@ -153,25 +168,23 @@ public class AutonomBlueLeft extends LinearOpMode {
                         .setReversed(true)
                         .splineToLinearHeading(dropYellowPixelPose,0)
                         .build());
-
+        //TODO : Code to drop Pixel on Backdrop
         robot.arm.setDirection(DcMotorEx.Direction.FORWARD);
-        robot.arm.setTargetPosition(1500);
+        robot.arm.setTargetPosition(2500);
         robot.arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.arm.setPower(0.7);
-        robot.clawArm.setPosition(0.25);
-        safeWaitSeconds(1);
-        robot.clawRight.setPosition(0.2);
-        robot.clawLeft.setPosition(0.8);
+        robot.clawArm.setPosition(0.5);
+        safeWaitSeconds(2);
+        robot.openClaw();
 
-        safeWaitSeconds(0.5);
-        robot.clawRight.setPosition(0.8);
-        robot.clawLeft.setPosition(0.2);
-        robot.clawArm.setPosition(0.38);
+        safeWaitSeconds(1);
+        robot.closeClaw();
+        robot.clawArm.setPosition(0.36);
 
         safeWaitSeconds(2);
 
         robot.arm.setDirection(DcMotorEx.Direction.FORWARD);
-        robot.arm.setTargetPosition(100);
+        robot.arm.setTargetPosition(10);
         robot.arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.arm.setPower(0.7);
         //TODO : Code to drop Pixel on Backdrop
@@ -180,7 +193,12 @@ public class AutonomBlueLeft extends LinearOpMode {
         //Move robot to park in Backstage
         Actions.runBlocking(
                 drive.actionBuilder(drive.pose)
-                        .strafeToLinearHeading(parkPose.position, parkPose.heading)
+                        .strafeToLinearHeading(parkPose1.position, parkPose1.heading)
+                        //.splineToLinearHeading(parkPose,0)
+                        .build());
+        Actions.runBlocking(
+                drive.actionBuilder(drive.pose)
+                        .strafeToLinearHeading(parkPose2.position, parkPose2.heading)
                         //.splineToLinearHeading(parkPose,0)
                         .build());
     }
@@ -226,7 +244,7 @@ public class AutonomBlueLeft extends LinearOpMode {
                 .setModelInputSize(1200)
                 .setModelAspectRatio(16.0 / 9.0)
                 .build();
-        tfod.setMinResultConfidence(0.90f);
+        tfod.setMinResultConfidence(0.75f);
 
         // Create the vision portal the easy way.
         if (USE_WEBCAM) {
@@ -267,7 +285,7 @@ public class AutonomBlueLeft extends LinearOpMode {
             telemetry.addData("- Position", "%.0f / %.0f", x, y);
             telemetry.addData("- Size", "%.0f x %.0f", recognition.getWidth(), recognition.getHeight());
 
-            if (recognition.getLabel() == "StarTechBLue" && recognition.getConfidence()>0.9) {
+            if (recognition.getLabel() == "StarTechBLue" && recognition.getConfidence()>0.75) {
                 if (x < 200) {
                     identifiedSpikeMarkLocation = IDENTIFIED_SPIKE_MARK_LOCATION.LEFT;
                 } else {

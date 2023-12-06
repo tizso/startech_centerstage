@@ -8,10 +8,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.util.Range;
 
-import org.firstinspires.ftc.teamcode.tuning.TuningOpModes;
 
 /**
  * FTC WIRES TeleOp Example
@@ -25,6 +22,9 @@ public class FTCWiresTeleOpMode extends LinearOpMode {
 
     int up = 0;
     int down = 0;
+    int suportUp = 0;
+    int hangUp = 0;
+    int hangDown = 0;
 
     @Override
 
@@ -36,9 +36,10 @@ public class FTCWiresTeleOpMode extends LinearOpMode {
         telemetry.update();
 
         robot.arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.hangUp.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         robot.arm.setDirection(DcMotorEx.Direction.FORWARD);
-        robot.arm.setTargetPosition(100);
+        robot.arm.setTargetPosition(20);
         robot.arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.arm.setPower(0.9);
         sleep(200);
@@ -48,6 +49,13 @@ public class FTCWiresTeleOpMode extends LinearOpMode {
         waitForStart();
 
         while (opModeIsActive()) {
+            if(gamepad1.b ){
+                SLOW_DOWN_FACTOR = 0.3;
+            }
+            if(gamepad1.a ){
+                SLOW_DOWN_FACTOR = 0.9;
+            }
+
             telemetry.addData("Running StarTech TeleOp Mode adopted for Team:","18338");
             drive.setDrivePowers(new PoseVelocity2d(
                     new Vector2d(
@@ -100,7 +108,50 @@ public class FTCWiresTeleOpMode extends LinearOpMode {
                 sleep(200);
             }
 
+            if (gamepad1.left_bumper && suportUp == 0) {
+                robot.suport.setPosition(1);
+                sleep(300);
+                suportUp = 1;
+            }
+
+            if (gamepad1.left_bumper && suportUp == 1) {
+                robot.suport.setPosition(0);
+                sleep(300);
+                suportUp = 0;
+            }
+
+            if (gamepad1.right_bumper) {
+                robot.hangUp.setDirection(DcMotorEx.Direction.FORWARD);
+                robot.hangUp.setTargetPosition(17000);
+                robot.hangUp.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                robot.hangUp.setPower(0.9);
+                sleep(300);
+
+            }
+            /*if (gamepad1.right_bumper && hangUp == 1) {
+                robot.hangUp.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                robot.hangUp.setPower(0);
+                sleep(300);
+                hangUp = 0;
+            }*/
+
+            if(gamepad1.back){
+
+                robot.hangUp.setDirection(DcMotorEx.Direction.REVERSE);
+                robot.hangUp.setTargetPosition(0);
+                robot.hangUp.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                robot.hangUp.setPower(0.5);
+                sleep(300);
+
+            }
+
+
+
+
+
             if(gamepad2.y){
+                robot.closeClaw();
+
                 robot.arm.setDirection(DcMotorEx.Direction.FORWARD);
                 robot.arm.setTargetPosition(2500);
                 robot.arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -109,6 +160,8 @@ public class FTCWiresTeleOpMode extends LinearOpMode {
                 sleep(200);
             }
             if(gamepad2.b){
+                robot.closeClaw();
+
                 robot.arm.setDirection(DcMotorEx.Direction.FORWARD);
                 robot.arm.setTargetPosition(2000);
                 robot.arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -117,45 +170,43 @@ public class FTCWiresTeleOpMode extends LinearOpMode {
                 sleep(200);
             }
             if(gamepad2.x){
+                robot.closeClaw();
+
                 robot.arm.setDirection(DcMotorEx.Direction.FORWARD);
                 robot.arm.setTargetPosition(1500);
                 robot.arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 robot.arm.setPower(armSpeed);
-                robot.clawArm.setPosition(0.36);
+                robot.clawArm.setPosition(0.1);
                 sleep(200);
             }
 
             if(gamepad2.back){
+                robot.clawArm.setPosition(0.36);
+                robot.closeClaw();
                 robot.arm.setDirection(DcMotorEx.Direction.FORWARD);
-                robot.arm.setTargetPosition(100);
+                robot.arm.setTargetPosition(20);
                 robot.arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 robot.arm.setPower(armSpeed);
                 sleep(200);
             }
 
             if(gamepad2.a){
-                robot.clawArm.setPosition(0.4);
-                robot.clawRight.setPosition(0.8);
-                robot.clawLeft.setPosition(0.2);
+                robot.clawArm.setPosition(0.36);
+                robot.closeClaw();
                 robot.arm.setDirection(DcMotorEx.Direction.FORWARD);
-                robot.arm.setTargetPosition(100);
+                robot.arm.setTargetPosition(20);
                 robot.arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 robot.arm.setPower(armSpeed);
                 sleep(200);
             }
 
-            //clawRight.setPosition(pos < 0.55 ? 0.6 : 0.52)
-            /*clawLeft.setPosition(0.4);
-            clawRight.setPosition(0.6);*/
             if (gamepad2.right_bumper) {
-                robot.clawRight.setPosition(0.48);
-                robot.clawLeft.setPosition(0.52);
+                robot.openClaw();
                 sleep(300);
             }
 
             if (gamepad2.left_bumper) {
-                robot.clawLeft.setPosition(0.38);
-                robot.clawRight.setPosition(0.6);
+                robot.closeClaw();
                 sleep(300);
             }
 
@@ -169,8 +220,10 @@ public class FTCWiresTeleOpMode extends LinearOpMode {
             telemetry.addData("clawRight", robot.clawRight.getPosition());
             telemetry.addData("dpad_down", gamepad1.dpad_down);
             telemetry.addData("colector get dir: ", robot.colector.getDirection());
+            telemetry.addData("hangUp: ", robot.hangUp.getCurrentPosition());
 
             telemetry.update();
         }
     }
+
 }

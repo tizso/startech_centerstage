@@ -212,7 +212,7 @@ public class AutonomBlueRight extends LinearOpMode {
                 .setModelInputSize(1200)
                 .setModelAspectRatio(16.0 / 9.0)
                 .build();
-        tfod.setMinResultConfidence(0.90f);
+        tfod.setMinResultConfidence(0.75f);
 
         // Create the vision portal the easy way.
         if (USE_WEBCAM) {
@@ -253,7 +253,7 @@ public class AutonomBlueRight extends LinearOpMode {
             telemetry.addData("- Position", "%.0f / %.0f", x, y);
             telemetry.addData("- Size", "%.0f x %.0f", recognition.getWidth(), recognition.getHeight());
 
-            if (recognition.getLabel() == "StarTechBLue" && recognition.getConfidence()>0.9) {
+            if (recognition.getLabel() == "StarTechBLue" && recognition.getConfidence()>0.75) {
                 if (x < 200) {
                     identifiedSpikeMarkLocation = FTCWiresAutonomous.IDENTIFIED_SPIKE_MARK_LOCATION.MIDDLE;
                 } else {

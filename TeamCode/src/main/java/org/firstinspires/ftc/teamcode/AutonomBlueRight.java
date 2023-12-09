@@ -24,6 +24,7 @@ public class AutonomBlueRight extends LinearOpMode {
     public static String TEAM_NAME = "StarTech";
     public static int TEAM_NUMBER = 18338;
 
+    HardwareBox robot = new HardwareBox();
     private static final boolean USE_WEBCAM = true;  // true for webcam, false for phone camera
 
     /**
@@ -50,7 +51,7 @@ public class AutonomBlueRight extends LinearOpMode {
         MIDDLE,
         RIGHT
     }
-    public static FTCWiresAutonomous.IDENTIFIED_SPIKE_MARK_LOCATION identifiedSpikeMarkLocation = FTCWiresAutonomous.IDENTIFIED_SPIKE_MARK_LOCATION.LEFT;
+    public static IDENTIFIED_SPIKE_MARK_LOCATION identifiedSpikeMarkLocation = FTCWiresAutonomous.IDENTIFIED_SPIKE_MARK_LOCATION.LEFT;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -100,7 +101,7 @@ public class AutonomBlueRight extends LinearOpMode {
         drive = new MecanumDrive(hardwareMap, initPose);
         switch(identifiedSpikeMarkLocation){
             case LEFT:
-                dropPurplePixelPose = new Pose2d(27, 9, Math.toRadians(45));
+                dropPurplePixelPose = new Pose2d(27, 3, Math.toRadians(45));
                 dropYellowPixelPose = new Pose2d(27, 86, Math.toRadians(-90));
                 break;
             case MIDDLE:
@@ -113,7 +114,7 @@ public class AutonomBlueRight extends LinearOpMode {
                 break;
         }
         midwayPose1 = new Pose2d(4, -8, Math.toRadians(0));
-        midwayPose1a = new Pose2d(8, -25, Math.toRadians(-85));
+        midwayPose1a = new Pose2d(8, -23, Math.toRadians(-72));
         intakeStack = new Pose2d(52, -24,Math.toRadians(-90));
         midwayPose2 = new Pose2d(52, 62, Math.toRadians(-90));
         waitSecondsBeforeDrop = 2; //TODO: Adjust time to wait for alliance partner to move from board

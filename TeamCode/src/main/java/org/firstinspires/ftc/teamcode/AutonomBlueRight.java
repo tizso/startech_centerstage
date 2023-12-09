@@ -8,6 +8,8 @@ import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
@@ -25,6 +27,7 @@ public class AutonomBlueRight extends LinearOpMode {
     public static int TEAM_NUMBER = 18338;
 
     HardwareBox robot = new HardwareBox();
+
     private static final boolean USE_WEBCAM = true;  // true for webcam, false for phone camera
 
     /**
@@ -51,13 +54,23 @@ public class AutonomBlueRight extends LinearOpMode {
         MIDDLE,
         RIGHT
     }
-    public static IDENTIFIED_SPIKE_MARK_LOCATION identifiedSpikeMarkLocation = FTCWiresAutonomous.IDENTIFIED_SPIKE_MARK_LOCATION.LEFT;
+    public static IDENTIFIED_SPIKE_MARK_LOCATION identifiedSpikeMarkLocation = IDENTIFIED_SPIKE_MARK_LOCATION.LEFT;
 
     @Override
     public void runOpMode() throws InterruptedException {
 
         //Activate Camera Vision that uses TensorFlow for pixel detection
         initTfod();
+        robot.init(hardwareMap);
+        robot.arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        //colector
+        robot.colector.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        robot.arm.setDirection(DcMotorEx.Direction.FORWARD);
+        robot.arm.setTargetPosition(20);
+        robot.arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.arm.setPower(0.9);
+        sleep(200);
 
         // Wait for the DS start button to be touched.
         telemetry.addData("DS preview on/off", "3 dots, Camera Stream");
@@ -130,6 +143,12 @@ public class AutonomBlueRight extends LinearOpMode {
 
         //TODO : Code to drop Purple Pixel on Spike Mark
         safeWaitSeconds(1);
+        robot.colector.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        robot.colector.setDirection(DcMotorEx.Direction.FORWARD);
+        robot.colector.setPower(0.3);
+        safeWaitSeconds(0.7);
+        robot.colector.setPower(0);
+        safeWaitSeconds(1);
 
         //Move robot to midwayPose1
         Actions.runBlocking(
@@ -162,6 +181,25 @@ public class AutonomBlueRight extends LinearOpMode {
                         .build());
 
 
+        //TODO : Code to drop Pixel on Backdrop
+        robot.arm.setDirection(DcMotorEx.Direction.FORWARD);
+        robot.arm.setTargetPosition(2500);
+        robot.arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.arm.setPower(0.7);
+        robot.clawArm.setPosition(0.5);
+        safeWaitSeconds(2);
+        robot.openClaw();
+
+        safeWaitSeconds(1);
+        robot.closeClaw();
+        robot.clawArm.setPosition(0.36);
+
+        safeWaitSeconds(2);
+
+        robot.arm.setDirection(DcMotorEx.Direction.FORWARD);
+        robot.arm.setTargetPosition(10);
+        robot.arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.arm.setPower(0.7);
         //TODO : Code to drop Pixel on Backdrop
         safeWaitSeconds(1);
 
@@ -242,7 +280,7 @@ public class AutonomBlueRight extends LinearOpMode {
         telemetry.addData("# Objects Detected", currentRecognitions.size());
 
         //Camera placed between Left and Right Spike Mark on RED_LEFT and BLUE_LEFT If pixel not visible, assume Right spike Mark
-        identifiedSpikeMarkLocation = FTCWiresAutonomous.IDENTIFIED_SPIKE_MARK_LOCATION.RIGHT;
+        identifiedSpikeMarkLocation = IDENTIFIED_SPIKE_MARK_LOCATION.RIGHT;
 
         // Step through the list of recognitions and display info for each one.
         for (Recognition recognition : currentRecognitions) {
@@ -256,9 +294,9 @@ public class AutonomBlueRight extends LinearOpMode {
 
             if (recognition.getLabel() == "StarTechBLue" && recognition.getConfidence()>0.75) {
                 if (x > 200) {
-                    identifiedSpikeMarkLocation = FTCWiresAutonomous.IDENTIFIED_SPIKE_MARK_LOCATION.MIDDLE;
+                    identifiedSpikeMarkLocation = IDENTIFIED_SPIKE_MARK_LOCATION.MIDDLE;
                 } else {
-                    identifiedSpikeMarkLocation = FTCWiresAutonomous.IDENTIFIED_SPIKE_MARK_LOCATION.LEFT;
+                    identifiedSpikeMarkLocation = IDENTIFIED_SPIKE_MARK_LOCATION.LEFT;
                 }
             }
 

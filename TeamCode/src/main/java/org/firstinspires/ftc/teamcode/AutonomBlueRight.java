@@ -114,22 +114,22 @@ public class AutonomBlueRight extends LinearOpMode {
         drive = new MecanumDrive(hardwareMap, initPose);
         switch(identifiedSpikeMarkLocation){
             case LEFT:
-                dropPurplePixelPose = new Pose2d(27, 3, Math.toRadians(45));
+                dropPurplePixelPose = new Pose2d(27, 1, Math.toRadians(45));
                 dropYellowPixelPose = new Pose2d(27, 86, Math.toRadians(-90));
                 break;
             case MIDDLE:
-                dropPurplePixelPose = new Pose2d(26, -3, Math.toRadians(0));
+                dropPurplePixelPose = new Pose2d(28, -4, Math.toRadians(0));
                 dropYellowPixelPose = new Pose2d(34, 86, Math.toRadians(-90));
                 break;
             case RIGHT:
-                dropPurplePixelPose = new Pose2d(18, -15, Math.toRadians(0));
+                dropPurplePixelPose = new Pose2d(16, -17, Math.toRadians(0));
                 dropYellowPixelPose = new Pose2d(43, 86, Math.toRadians(-90));
                 break;
         }
         midwayPose1 = new Pose2d(4, -8, Math.toRadians(0));
-        midwayPose1a = new Pose2d(8, -23, Math.toRadians(-72));
-        intakeStack = new Pose2d(52, -24,Math.toRadians(-90));
-        midwayPose2 = new Pose2d(52, 62, Math.toRadians(-90));
+        midwayPose1a = new Pose2d(0, -23, Math.toRadians(-68));
+        intakeStack = new Pose2d(70, -24,Math.toRadians(-85));
+        midwayPose2 = new Pose2d(70, 62, Math.toRadians(-85));
         waitSecondsBeforeDrop = 2; //TODO: Adjust time to wait for alliance partner to move from board
         parkPose = new Pose2d(50, 84, Math.toRadians(-90));
 
@@ -166,7 +166,7 @@ public class AutonomBlueRight extends LinearOpMode {
         safeWaitSeconds(1);
 
         //Move robot to midwayPose2 and to dropYellowPixelPose
-        /*Actions.runBlocking(
+        Actions.runBlocking(
                 drive.actionBuilder(drive.pose)
                         .strafeToLinearHeading(midwayPose2.position, midwayPose2.heading)
                         .build());
@@ -182,7 +182,7 @@ public class AutonomBlueRight extends LinearOpMode {
 
 
         //TODO : Code to drop Pixel on Backdrop
-        robot.arm.setDirection(DcMotorEx.Direction.FORWARD);
+        /*robot.arm.setDirection(DcMotorEx.Direction.FORWARD);
         robot.arm.setTargetPosition(2500);
         robot.arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.arm.setPower(0.7);
@@ -199,7 +199,7 @@ public class AutonomBlueRight extends LinearOpMode {
         robot.arm.setDirection(DcMotorEx.Direction.FORWARD);
         robot.arm.setTargetPosition(10);
         robot.arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.arm.setPower(0.7);
+        robot.arm.setPower(0.7);*/
         //TODO : Code to drop Pixel on Backdrop
         safeWaitSeconds(1);
 
@@ -208,7 +208,7 @@ public class AutonomBlueRight extends LinearOpMode {
                 drive.actionBuilder(drive.pose)
                         .strafeToLinearHeading(parkPose.position, parkPose.heading)
                         //.splineToLinearHeading(parkPose,0)
-                        .build());*/
+                        .build());
     }
 
     //method to wait safely with stop button working if needed. Use this instead of sleep

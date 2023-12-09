@@ -113,7 +113,7 @@ public class AutonomBlueRight extends LinearOpMode {
                 break;
         }
         midwayPose1 = new Pose2d(4, -8, Math.toRadians(0));
-        midwayPose1a = new Pose2d(8, -27, Math.toRadians(-85));
+        midwayPose1a = new Pose2d(8, -25, Math.toRadians(-85));
         intakeStack = new Pose2d(52, -24,Math.toRadians(-90));
         midwayPose2 = new Pose2d(52, 62, Math.toRadians(-90));
         waitSecondsBeforeDrop = 2; //TODO: Adjust time to wait for alliance partner to move from board

@@ -62,14 +62,14 @@ public class AutonomusRedRight extends LinearOpMode {
         //Activate Camera Vision that uses TensorFlow for pixel detection
         initTfod();
         robot.init(hardwareMap);
-        robot.arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.slider.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         //colector
         robot.colector.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        robot.arm.setDirection(DcMotorEx.Direction.FORWARD);
-        robot.arm.setTargetPosition(20);
-        robot.arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.arm.setPower(0.9);
+        robot.slider.setDirection(DcMotorEx.Direction.FORWARD);
+        robot.slider.setTargetPosition(20);
+        robot.slider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.slider.setPower(0.9);
         sleep(200);
 
         // Wait for the DS start button to be touched.
@@ -143,13 +143,10 @@ public class AutonomusRedRight extends LinearOpMode {
                         .build());
 
         //TODO : Code to drop Purple Pixel on Spike Mark
-        safeWaitSeconds(1);
-        robot.colector.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        robot.colector.setDirection(DcMotorEx.Direction.FORWARD);
-        robot.colector.setPower(0.3);
-        safeWaitSeconds(0.7);
-        robot.colector.setPower(0);
-        safeWaitSeconds(1);
+
+        robot.putPurplePixel();
+
+        //TODO : Code to drop Purple Pixel on Spike Mark
 
         //Move robot to midwayPose1
         Actions.runBlocking(
@@ -165,24 +162,11 @@ public class AutonomusRedRight extends LinearOpMode {
                         .setReversed(true)
                         .splineToLinearHeading(dropYellowPixelPose,0)
                         .build());
-        robot.arm.setDirection(DcMotorEx.Direction.FORWARD);
-        robot.arm.setTargetPosition(2500);
-        robot.arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.arm.setPower(0.7);
-        robot.clawArm.setPosition(0.5);
-        safeWaitSeconds(2);
-        robot.openClaw();
 
-        safeWaitSeconds(1);
-        robot.closeClaw();
-        robot.clawArm.setPosition(0.36);
+        //TODO : Code to drop Pixel on Backdrop
 
-        safeWaitSeconds(2);
+        robot.dropPixel();
 
-        robot.arm.setDirection(DcMotorEx.Direction.FORWARD);
-        robot.arm.setTargetPosition(10);
-        robot.arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.arm.setPower(0.7);
         //TODO : Code to drop Pixel on Backdrop
 
 

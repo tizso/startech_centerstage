@@ -62,14 +62,14 @@ public class AutonomusRedLeft extends LinearOpMode {
         //Activate Camera Vision that uses TensorFlow for pixel detection
         initTfod();
         robot.init(hardwareMap);
-        robot.arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.slider.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         //colector
         robot.colector.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        robot.arm.setDirection(DcMotorEx.Direction.FORWARD);
-        robot.arm.setTargetPosition(100);
-        robot.arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.arm.setPower(0.9);
+        robot.slider.setDirection(DcMotorEx.Direction.FORWARD);
+        robot.slider.setTargetPosition(100);
+        robot.slider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.slider.setPower(0.9);
         sleep(200);
 
         // Wait for the DS start button to be touched.
@@ -140,7 +140,9 @@ public class AutonomusRedLeft extends LinearOpMode {
                         .build());
 
         //TODO : Code to drop Purple Pixel on Spike Mark
-        safeWaitSeconds(1);
+        robot.putPurplePixel();
+        //TODO : Code to drop Purple Pixel on Spike Mark
+
 
         //Move robot to midwayPose1
         Actions.runBlocking(
@@ -155,7 +157,7 @@ public class AutonomusRedLeft extends LinearOpMode {
                         .build());
 
         //TODO : Code to intake pixel from stack
-        safeWaitSeconds(1);
+        robot.safeWaitSeconds(1);
 
         //Move robot to midwayPose2 and to dropYellowPixelPose
         Actions.runBlocking(
@@ -163,7 +165,7 @@ public class AutonomusRedLeft extends LinearOpMode {
                         .strafeToLinearHeading(midwayPose2.position, midwayPose2.heading)
                         .build());
 
-        safeWaitSeconds(waitSecondsBeforeDrop);
+        robot.safeWaitSeconds(waitSecondsBeforeDrop);
 
         //Move robot to midwayPose2 and to dropYellowPixelPose
         Actions.runBlocking(
@@ -174,7 +176,9 @@ public class AutonomusRedLeft extends LinearOpMode {
 
 
         //TODO : Code to drop Pixel on Backdrop
-        safeWaitSeconds(1);
+        robot.dropPixel();
+        //TODO : Code to drop Pixel on Backdrop
+
 
         //Move robot to park in Backstage
         Actions.runBlocking(
@@ -185,12 +189,7 @@ public class AutonomusRedLeft extends LinearOpMode {
     }
 
     //method to wait safely with stop button working if needed. Use this instead of sleep
-    public void safeWaitSeconds(double time) {
-        ElapsedTime timer = new ElapsedTime(SECONDS);
-        timer.reset();
-        while (!isStopRequested() && timer.time() < time) {
-        }
-    }
+
 
     /**
      * Initialize the TensorFlow Object Detection processor.

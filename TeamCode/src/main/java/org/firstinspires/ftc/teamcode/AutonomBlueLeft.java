@@ -10,7 +10,6 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
@@ -64,14 +63,14 @@ public class AutonomBlueLeft extends LinearOpMode {
         //Activate Camera Vision that uses TensorFlow for pixel detection
         initTfod();
         robot.init(hardwareMap);
-        robot.arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.slider.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         //colector
         robot.colector.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        robot.arm.setDirection(DcMotorEx.Direction.FORWARD);
-        robot.arm.setTargetPosition(20);
-        robot.arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.arm.setPower(0.9);
+        robot.slider.setDirection(DcMotorEx.Direction.FORWARD);
+        robot.slider.setTargetPosition(20);
+        robot.slider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.slider.setPower(0.9);
         sleep(200);
 
         // Wait for the DS start button to be touched.
@@ -146,13 +145,11 @@ public class AutonomBlueLeft extends LinearOpMode {
                         .build());
 
         //TODO : Code to drop Purple Pixel on Spike Mark
-        safeWaitSeconds(1);
-        robot.colector.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        robot.colector.setDirection(DcMotorEx.Direction.FORWARD);
-        robot.colector.setPower(0.3);
-        safeWaitSeconds(0.7);
-        robot.colector.setPower(0);
-        safeWaitSeconds(1);
+
+        robot.putPurplePixel();
+
+        //TODO : Code to drop Purple Pixel on Spike Mark
+
 
         //Move robot to midwayPose1
         Actions.runBlocking(
@@ -160,7 +157,7 @@ public class AutonomBlueLeft extends LinearOpMode {
                         .strafeToLinearHeading(midwayPose1.position, midwayPose1.heading)
                         .build());
 
-        safeWaitSeconds(waitSecondsBeforeDrop);
+        robot.safeWaitSeconds(waitSecondsBeforeDrop);
 
         //Move robot to midwayPose2 and to dropYellowPixelPose
         Actions.runBlocking(
@@ -169,26 +166,11 @@ public class AutonomBlueLeft extends LinearOpMode {
                         .splineToLinearHeading(dropYellowPixelPose,0)
                         .build());
         //TODO : Code to drop Pixel on Backdrop
-        robot.arm.setDirection(DcMotorEx.Direction.FORWARD);
-        robot.arm.setTargetPosition(2500);
-        robot.arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.arm.setPower(0.7);
-        robot.clawArm.setPosition(0.5);
-        safeWaitSeconds(2);
-        robot.openClaw();
 
-        safeWaitSeconds(1);
-        robot.closeClaw();
-        robot.clawArm.setPosition(0.36);
+        robot.dropPixel();
 
-        safeWaitSeconds(2);
-
-        robot.arm.setDirection(DcMotorEx.Direction.FORWARD);
-        robot.arm.setTargetPosition(10);
-        robot.arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.arm.setPower(0.7);
         //TODO : Code to drop Pixel on Backdrop
-        safeWaitSeconds(1);
+        robot.safeWaitSeconds(1);
 
         //Move robot to park in Backstage
         Actions.runBlocking(
@@ -205,12 +187,12 @@ public class AutonomBlueLeft extends LinearOpMode {
 
 
     //method to wait safely with stop button working if needed. Use this instead of sleep
-    public void safeWaitSeconds(double time) {
+    /*public void safeWaitSeconds(double time) {
         ElapsedTime timer = new ElapsedTime(SECONDS);
         timer.reset();
         while (!isStopRequested() && timer.time() < time) {
         }
-    }
+    }*/
 
     /**
      * Initialize the TensorFlow Object Detection processor.

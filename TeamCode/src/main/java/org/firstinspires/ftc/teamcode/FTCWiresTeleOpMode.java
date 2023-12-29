@@ -35,13 +35,13 @@ public class FTCWiresTeleOpMode extends LinearOpMode {
         telemetry.addData("Initializing FTC TeleOp adopted for Team:","18338");
         telemetry.update();
 
-        robot.arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.slider.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.hangUp.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        robot.arm.setDirection(DcMotorEx.Direction.FORWARD);
-        robot.arm.setTargetPosition(20);
-        robot.arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.arm.setPower(0.9);
+        robot.slider.setDirection(DcMotorEx.Direction.FORWARD);
+        robot.slider.setTargetPosition(20);
+        robot.slider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.slider.setPower(0.9);
         sleep(200);
 
         MecanumDrive drive = new MecanumDrive(hardwareMap, new Pose2d(0, 0, 0));
@@ -67,32 +67,32 @@ public class FTCWiresTeleOpMode extends LinearOpMode {
 
             drive.updatePoseEstimate();
 
-            double armSpeed = 0.7;
+            double sliderSpeed = 0.7;
 
             if(gamepad1.dpad_up && up == 0){
-                robot.arm.setDirection(DcMotorEx.Direction.FORWARD);
-                robot.arm.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-                robot.arm.setPower(armSpeed/4);
+                robot.slider.setDirection(DcMotorEx.Direction.FORWARD);
+                robot.slider.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                robot.slider.setPower(sliderSpeed/4);
                 up=1;
                 sleep(200);
             }
 
             if(gamepad1.dpad_up && up == 1){
-                robot.arm.setPower(0);
+                robot.slider.setPower(0);
                 up = 0;
                 sleep(200);
             }
 
             if(gamepad1.dpad_down & down == 0){
-                robot.arm.setDirection(DcMotorSimple.Direction.REVERSE);
-                robot.arm.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-                robot.arm.setPower(armSpeed/4);
+                robot.slider.setDirection(DcMotorSimple.Direction.REVERSE);
+                robot.slider.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                robot.slider.setPower(sliderSpeed/4);
                 down = 1;
                 sleep(200);
             }
 
             if(gamepad1.dpad_down & down == 1){
-                robot.arm.setPower(0);
+                robot.slider.setPower(0);
                 down = 0;
                 sleep(200);
             }
@@ -100,7 +100,11 @@ public class FTCWiresTeleOpMode extends LinearOpMode {
             if((gamepad1.y || gamepad1.x) && robot.colector.getPower() == 0){
                 robot.colector.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
                 robot.colector.setDirection(gamepad1.x?DcMotorEx.Direction.FORWARD:DcMotorEx.Direction.REVERSE);
-                robot.colector.setPower(0.7);
+                robot.colector.setPower(0.5);
+
+                robot.intake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                robot.intake.setDirection(gamepad1.x?DcMotorEx.Direction.REVERSE:DcMotorEx.Direction.FORWARD);
+                robot.intake.setPower(1.0);
                 sleep(200);
             }
             if((gamepad1.y || gamepad1.x) && robot.colector.getPower() > 0){
@@ -150,63 +154,56 @@ public class FTCWiresTeleOpMode extends LinearOpMode {
 
 
             if(gamepad2.y){
-                robot.closeClaw();
-
-                robot.arm.setDirection(DcMotorEx.Direction.FORWARD);
-                robot.arm.setTargetPosition(2500);
-                robot.arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                robot.arm.setPower(armSpeed);
-                robot.clawArm.setPosition(0.5);
+                robot.slider.setDirection(DcMotorEx.Direction.FORWARD);
+                robot.slider.setTargetPosition(2500);
+                robot.slider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                robot.slider.setPower(sliderSpeed);
+                robot.putPixel();
                 sleep(200);
             }
             if(gamepad2.b){
-                robot.closeClaw();
-
-                robot.arm.setDirection(DcMotorEx.Direction.FORWARD);
-                robot.arm.setTargetPosition(2000);
-                robot.arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                robot.arm.setPower(armSpeed);
-                robot.clawArm.setPosition(0.4);
+                robot.slider.setDirection(DcMotorEx.Direction.FORWARD);
+                robot.slider.setTargetPosition(2000);
+                robot.slider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                robot.slider.setPower(sliderSpeed);
+                robot.putPixel();
                 sleep(200);
             }
             if(gamepad2.x){
-                robot.closeClaw();
-
-                robot.arm.setDirection(DcMotorEx.Direction.FORWARD);
-                robot.arm.setTargetPosition(1500);
-                robot.arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                robot.arm.setPower(armSpeed);
-                robot.clawArm.setPosition(0.1);
+                robot.slider.setDirection(DcMotorEx.Direction.FORWARD);
+                robot.slider.setTargetPosition(1500);
+                robot.slider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                robot.slider.setPower(sliderSpeed);
+                robot.putPixel();
                 sleep(200);
             }
 
             if(gamepad2.back){
-                robot.clawArm.setPosition(0.36);
-                robot.closeClaw();
-                robot.arm.setDirection(DcMotorEx.Direction.FORWARD);
-                robot.arm.setTargetPosition(20);
-                robot.arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                robot.arm.setPower(armSpeed);
+                robot.getPixel();
+                robot.slider.setDirection(DcMotorEx.Direction.FORWARD);
+                robot.slider.setTargetPosition(20);
+                robot.slider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                robot.slider.setPower(sliderSpeed);
                 sleep(200);
             }
 
             if(gamepad2.a){
-                robot.clawArm.setPosition(0.36);
-                robot.closeClaw();
-                robot.arm.setDirection(DcMotorEx.Direction.FORWARD);
-                robot.arm.setTargetPosition(20);
-                robot.arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                robot.arm.setPower(armSpeed);
+                robot.pixelS.setPosition(0.36);
+                robot.getPixel();
+                robot.slider.setDirection(DcMotorEx.Direction.FORWARD);
+                robot.slider.setTargetPosition(20);
+                robot.slider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                robot.slider.setPower(sliderSpeed);
                 sleep(200);
             }
 
             if (gamepad2.right_bumper) {
-                robot.openClaw();
+                robot.pixelS.setPosition(0.36);
                 sleep(300);
             }
 
             if (gamepad2.left_bumper) {
-                robot.closeClaw();
+
                 sleep(300);
             }
 
@@ -214,10 +211,10 @@ public class FTCWiresTeleOpMode extends LinearOpMode {
             telemetry.addData("x", drive.pose.position.x);
             telemetry.addData("y", drive.pose.position.y);
             telemetry.addData("heading", Math.toDegrees(drive.pose.heading.log()));
-            telemetry.addData("arm position",robot.arm.getCurrentPosition());
-            telemetry.addData("clawArm", robot.clawArm.getPosition());
-            telemetry.addData("clawLeft", robot.clawLeft.getPosition());
-            telemetry.addData("clawRight", robot.clawRight.getPosition());
+            telemetry.addData("arm position",robot.slider.getCurrentPosition());
+            telemetry.addData("clawArm", robot.pixelS.getPosition());
+            telemetry.addData("clawLeft", robot.leftS.getPosition());
+            telemetry.addData("clawRight", robot.rightS.getPosition());
             telemetry.addData("dpad_down", gamepad1.dpad_down);
             telemetry.addData("colector get dir: ", robot.colector.getDirection());
             telemetry.addData("hangUp: ", robot.hangUp.getCurrentPosition());

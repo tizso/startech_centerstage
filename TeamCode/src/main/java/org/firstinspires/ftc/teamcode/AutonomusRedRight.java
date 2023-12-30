@@ -115,8 +115,8 @@ public class AutonomusRedRight extends LinearOpMode {
                 dropYellowPixelPose = new Pose2d(21, -36, Math.toRadians(75));
                 break;
             case MIDDLE:
-                dropPurplePixelPose = new Pose2d(28, -6, Math.toRadians(0));
-                dropYellowPixelPose = new Pose2d(34, -36,  Math.toRadians(85));
+                dropPurplePixelPose = new Pose2d(26.5, -2, Math.toRadians(0));
+                dropYellowPixelPose = new Pose2d(41, -33,  Math.toRadians(85));
                 break;
             case RIGHT:
                 dropPurplePixelPose = new Pose2d(20, -15, Math.toRadians(0));
@@ -267,7 +267,7 @@ public class AutonomusRedRight extends LinearOpMode {
             telemetry.addData("- Size", "%.0f x %.0f", recognition.getWidth(), recognition.getHeight());
 
             if (recognition.getLabel() == "StarTechRed" && recognition.getConfidence()>0.75) {
-                if (x < 300) {
+                if (x > 300) {
                     identifiedSpikeMarkLocation = FTCWiresAutonomous.IDENTIFIED_SPIKE_MARK_LOCATION.MIDDLE;
                 } else {
                     identifiedSpikeMarkLocation = FTCWiresAutonomous.IDENTIFIED_SPIKE_MARK_LOCATION.RIGHT;

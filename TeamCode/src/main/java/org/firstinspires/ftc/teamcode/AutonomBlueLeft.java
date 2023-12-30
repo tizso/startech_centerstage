@@ -113,24 +113,24 @@ public class AutonomBlueLeft extends LinearOpMode {
         drive = new MecanumDrive(hardwareMap, initPose);
         switch(identifiedSpikeMarkLocation){
             case LEFT:
-                dropPurplePixelPose = new Pose2d(17, 11, Math.toRadians(0));
-                dropYellowPixelPose = new Pose2d(51, 36, Math.toRadians(-83));
+                dropPurplePixelPose = new Pose2d(18, 17, Math.toRadians(0));
+                dropYellowPixelPose = new Pose2d(29.5, 35, Math.toRadians(-85));
                 break;
             case MIDDLE:
-                dropPurplePixelPose = new Pose2d(27, 2, Math.toRadians(0));
-                dropYellowPixelPose = new Pose2d(45, 36.5,  Math.toRadians(-81));
+                dropPurplePixelPose = new Pose2d(26.5, 2, Math.toRadians(0));
+                dropYellowPixelPose = new Pose2d(41, 33,  Math.toRadians(-85));
                 break;
             case RIGHT:
-                dropPurplePixelPose = new Pose2d(24, -4, Math.toRadians(-45));
-                dropYellowPixelPose = new Pose2d(29, 35, Math.toRadians(-74));
+                dropPurplePixelPose = new Pose2d(24, -4.5, Math.toRadians(-45));
+                dropYellowPixelPose = new Pose2d(51, 33.5, Math.toRadians(-84));
                 break;
         }
         midwayPose1 = new Pose2d(10, 13, Math.toRadians(-45));
         waitSecondsBeforeDrop = 2; //TODO: Adjust time to wait for alliance partner to move from board
 
         //parking left side
-        parkPose1 = new Pose2d(0, 30, Math.toRadians(-90));
-        parkPose2 = new Pose2d(0, 40, Math.toRadians(-90));
+        parkPose1 = new Pose2d(-5, 32, Math.toRadians(-83));
+        parkPose2 = new Pose2d(-5, 45, Math.toRadians(-83));
 
         //parking right side
         /*parkPose1 = new Pose2d(60, 30, Math.toRadians(-90));

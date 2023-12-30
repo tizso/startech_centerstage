@@ -4,6 +4,7 @@ import static com.qualcomm.robotcore.util.ElapsedTime.Resolution.SECONDS;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -85,7 +86,7 @@ public class HardwareBox extends LinearOpMode{
     public void putPurplePixel(){
         safeWaitSeconds(1);
         colector.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        colector.setDirection(DcMotorEx.Direction.FORWARD);
+        colector.setDirection(DcMotorEx.Direction.REVERSE);
         colector.setPower(0.3);
         safeWaitSeconds(0.7);
         colector.setPower(0);
@@ -94,21 +95,21 @@ public class HardwareBox extends LinearOpMode{
 
     public void dropPixel(){
         slider.setDirection(DcMotorEx.Direction.FORWARD);
-        slider.setTargetPosition(1000);
+        slider.setTargetPosition(200);
         slider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         slider.setPower(0.7);
-        pixelS.setPosition(0.5);
-        safeWaitSeconds(2);
+
+        safeWaitSeconds(1);
         putPixel();
+        safeWaitSeconds(1);
+        pixelS.setPosition(0.6);
 
         safeWaitSeconds(1);
         getPixel();
         pixelS.setPosition(0.36);
 
-        safeWaitSeconds(2);
-
         slider.setDirection(DcMotorEx.Direction.FORWARD);
-        slider.setTargetPosition(10);
+        slider.setTargetPosition(0);
         slider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         slider.setPower(0.7);
     }

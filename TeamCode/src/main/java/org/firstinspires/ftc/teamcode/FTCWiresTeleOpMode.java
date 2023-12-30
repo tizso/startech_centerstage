@@ -38,10 +38,10 @@ public class FTCWiresTeleOpMode extends LinearOpMode {
         robot.slider.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.hangUp.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        robot.slider.setDirection(DcMotorEx.Direction.FORWARD);
-        robot.slider.setTargetPosition(20);
-        robot.slider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.slider.setPower(0.9);
+//        robot.slider.setDirection(DcMotorEx.Direction.FORWARD);
+//        robot.slider.setTargetPosition(0);
+//        robot.slider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//        robot.slider.setPower(0.9);
         sleep(200);
 
         MecanumDrive drive = new MecanumDrive(hardwareMap, new Pose2d(0, 0, 0));
@@ -109,6 +109,7 @@ public class FTCWiresTeleOpMode extends LinearOpMode {
             }
             if((gamepad1.y || gamepad1.x) && robot.colector.getPower() > 0){
                 robot.colector.setPower(0);
+                robot.intake.setPower(0);
                 sleep(200);
             }
 
@@ -155,7 +156,7 @@ public class FTCWiresTeleOpMode extends LinearOpMode {
 
             if(gamepad2.y){
                 robot.slider.setDirection(DcMotorEx.Direction.FORWARD);
-                robot.slider.setTargetPosition(2500);
+                robot.slider.setTargetPosition(980);
                 robot.slider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 robot.slider.setPower(sliderSpeed);
                 robot.putPixel();
@@ -163,7 +164,7 @@ public class FTCWiresTeleOpMode extends LinearOpMode {
             }
             if(gamepad2.b){
                 robot.slider.setDirection(DcMotorEx.Direction.FORWARD);
-                robot.slider.setTargetPosition(2000);
+                robot.slider.setTargetPosition(450);
                 robot.slider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 robot.slider.setPower(sliderSpeed);
                 robot.putPixel();
@@ -171,7 +172,7 @@ public class FTCWiresTeleOpMode extends LinearOpMode {
             }
             if(gamepad2.x){
                 robot.slider.setDirection(DcMotorEx.Direction.FORWARD);
-                robot.slider.setTargetPosition(1500);
+                robot.slider.setTargetPosition(200);
                 robot.slider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 robot.slider.setPower(sliderSpeed);
                 robot.putPixel();
@@ -181,7 +182,7 @@ public class FTCWiresTeleOpMode extends LinearOpMode {
             if(gamepad2.back){
                 robot.getPixel();
                 robot.slider.setDirection(DcMotorEx.Direction.FORWARD);
-                robot.slider.setTargetPosition(20);
+                robot.slider.setTargetPosition(0);
                 robot.slider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 robot.slider.setPower(sliderSpeed);
                 sleep(200);
@@ -191,14 +192,14 @@ public class FTCWiresTeleOpMode extends LinearOpMode {
                 robot.pixelS.setPosition(0.36);
                 robot.getPixel();
                 robot.slider.setDirection(DcMotorEx.Direction.FORWARD);
-                robot.slider.setTargetPosition(20);
+                robot.slider.setTargetPosition(0);
                 robot.slider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 robot.slider.setPower(sliderSpeed);
                 sleep(200);
             }
 
             if (gamepad2.right_bumper) {
-                robot.pixelS.setPosition(0.36);
+                robot.pixelS.setPosition(0.7);
                 sleep(300);
             }
 
@@ -211,7 +212,7 @@ public class FTCWiresTeleOpMode extends LinearOpMode {
             telemetry.addData("x", drive.pose.position.x);
             telemetry.addData("y", drive.pose.position.y);
             telemetry.addData("heading", Math.toDegrees(drive.pose.heading.log()));
-            telemetry.addData("arm position",robot.slider.getCurrentPosition());
+            telemetry.addData("slider position",robot.slider.getCurrentPosition());
             telemetry.addData("clawArm", robot.pixelS.getPosition());
             telemetry.addData("clawLeft", robot.leftS.getPosition());
             telemetry.addData("clawRight", robot.rightS.getPosition());

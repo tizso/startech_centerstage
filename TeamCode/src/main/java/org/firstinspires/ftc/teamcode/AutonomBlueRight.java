@@ -114,24 +114,24 @@ public class AutonomBlueRight extends LinearOpMode {
         drive = new MecanumDrive(hardwareMap, initPose);
         switch(identifiedSpikeMarkLocation){
             case LEFT:
-                dropPurplePixelPose = new Pose2d(27, 1, Math.toRadians(45));
-                dropYellowPixelPose = new Pose2d(27, 86, Math.toRadians(-90));
+                dropPurplePixelPose = new Pose2d(27, 2, Math.toRadians(45));
+                dropYellowPixelPose = new Pose2d(15, 82, Math.toRadians(-90));
                 break;
             case MIDDLE:
-                dropPurplePixelPose = new Pose2d(28, -4, Math.toRadians(0));
-                dropYellowPixelPose = new Pose2d(34, 86, Math.toRadians(-90));
+                dropPurplePixelPose = new Pose2d(26, -7, Math.toRadians(0));
+                dropYellowPixelPose = new Pose2d(30, 84, Math.toRadians(-90));
                 break;
             case RIGHT:
-                dropPurplePixelPose = new Pose2d(16, -17, Math.toRadians(0));
-                dropYellowPixelPose = new Pose2d(43, 86, Math.toRadians(-90));
+                dropPurplePixelPose = new Pose2d(15, -17.5, Math.toRadians(0));
+                dropYellowPixelPose = new Pose2d(34, 84, Math.toRadians(-90));
                 break;
         }
         midwayPose1 = new Pose2d(4, -8, Math.toRadians(0));
-        midwayPose1a = new Pose2d(0, -23, Math.toRadians(-68));
+        midwayPose1a = new Pose2d(0, -21, Math.toRadians(-68));
         intakeStack = new Pose2d(70, -24,Math.toRadians(-85));
         midwayPose2 = new Pose2d(70, 62, Math.toRadians(-85));
         waitSecondsBeforeDrop = 2; //TODO: Adjust time to wait for alliance partner to move from board
-        parkPose = new Pose2d(50, 84, Math.toRadians(-90));
+        parkPose = new Pose2d(55, 84, Math.toRadians(-90));
 
 
         //Move robot to dropPurplePixel based on identified Spike Mark Location
@@ -169,6 +169,9 @@ public class AutonomBlueRight extends LinearOpMode {
 
         robot.safeWaitSeconds(waitSecondsBeforeDrop);
 
+        robot.sliderUp();
+
+        robot.safeWaitSeconds(1);
         //Move robot to midwayPose2 and to dropYellowPixelPose
         Actions.runBlocking(
                 drive.actionBuilder(drive.pose)

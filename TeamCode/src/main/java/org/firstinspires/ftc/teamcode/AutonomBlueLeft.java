@@ -159,6 +159,10 @@ public class AutonomBlueLeft extends LinearOpMode {
 
         robot.safeWaitSeconds(waitSecondsBeforeDrop);
 
+        robot.sliderUp();
+
+        robot.safeWaitSeconds(1);
+
         //Move robot to midwayPose2 and to dropYellowPixelPose
         Actions.runBlocking(
                 drive.actionBuilder(drive.pose)

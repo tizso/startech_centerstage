@@ -154,7 +154,10 @@ public class AutonomusRedRight extends LinearOpMode {
                         .strafeToLinearHeading(midwayPose1.position, midwayPose1.heading)
                         .build());
 
-        safeWaitSeconds(waitSecondsBeforeDrop);
+        robot.safeWaitSeconds(waitSecondsBeforeDrop);
+
+        robot.sliderUp();
+        robot.safeWaitSeconds(1);
 
         //Move robot to midwayPose2 and to dropYellowPixelPose
         Actions.runBlocking(
@@ -171,7 +174,7 @@ public class AutonomusRedRight extends LinearOpMode {
 
 
 
-        safeWaitSeconds(1);
+        robot.safeWaitSeconds(1);
 
         //Move robot to park in Backstage
         Actions.runBlocking(
@@ -187,12 +190,12 @@ public class AutonomusRedRight extends LinearOpMode {
     }
 
     //method to wait safely with stop button working if needed. Use this instead of sleep
-    public void safeWaitSeconds(double time) {
+    /*public void safeWaitSeconds(double time) {
         ElapsedTime timer = new ElapsedTime(SECONDS);
         timer.reset();
         while (!isStopRequested() && timer.time() < time) {
         }
-    }
+    }*/
 
     /**
      * Initialize the TensorFlow Object Detection processor.

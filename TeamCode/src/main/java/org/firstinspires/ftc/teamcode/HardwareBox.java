@@ -98,7 +98,7 @@ public class HardwareBox extends LinearOpMode{
         safeWaitSeconds(1);
     }
 
-    public void dropPixel(){
+    public void sliderUp(){
         slider.setDirection(DcMotorEx.Direction.FORWARD);
         slider.setTargetPosition(200);
         slider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -107,6 +107,11 @@ public class HardwareBox extends LinearOpMode{
         safeWaitSeconds(1);
         putPixel();
         safeWaitSeconds(1);
+    }
+
+    public void dropPixel(){
+        safeWaitSeconds(1);
+
         pixelS.setPosition(0.6);
 
         safeWaitSeconds(1);

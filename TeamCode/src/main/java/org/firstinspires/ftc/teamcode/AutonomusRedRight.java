@@ -111,16 +111,16 @@ public class AutonomusRedRight extends LinearOpMode {
         drive = new MecanumDrive(hardwareMap, initPose);
         switch(identifiedSpikeMarkLocation){
             case LEFT:
-                dropPurplePixelPose = new Pose2d(29, 2, Math.toRadians(45));
-                dropYellowPixelPose = new Pose2d(21, -36, Math.toRadians(75));
+                dropPurplePixelPose = new Pose2d(28.5, 2, Math.toRadians(45));
+                dropYellowPixelPose = new Pose2d(50, -37, Math.toRadians(81));
                 break;
             case MIDDLE:
-                dropPurplePixelPose = new Pose2d(26.5, -2, Math.toRadians(0));
-                dropYellowPixelPose = new Pose2d(41, -33,  Math.toRadians(85));
+                dropPurplePixelPose = new Pose2d(27.5, -3, Math.toRadians(0));
+                dropYellowPixelPose = new Pose2d(36, -35,  Math.toRadians(85));
                 break;
             case RIGHT:
                 dropPurplePixelPose = new Pose2d(20, -15, Math.toRadians(0));
-                dropYellowPixelPose = new Pose2d(44, -40, Math.toRadians(90));
+                dropYellowPixelPose = new Pose2d(24.5, -35.5, Math.toRadians(85));
                 break;
         }
         midwayPose1 = new Pose2d(14, -13, Math.toRadians(45));
@@ -132,8 +132,8 @@ public class AutonomusRedRight extends LinearOpMode {
         //parkPose2 = new Pose2d(0, 40, Math.toRadians(90));
 
         //parking right side
-        parkPose1 = new Pose2d(60, -30, Math.toRadians(90));
-        parkPose2 = new Pose2d(60, -35, Math.toRadians(90));
+        parkPose1 = new Pose2d(-5, -30, Math.toRadians(90));
+        parkPose2 = new Pose2d(-5, -40, Math.toRadians(90));
 
         //Move robot to dropPurplePixel based on identified Spike Mark Location
         Actions.runBlocking(
@@ -254,7 +254,7 @@ public class AutonomusRedRight extends LinearOpMode {
         List<Recognition> currentRecognitions = tfod.getRecognitions();
         telemetry.addData("# Objects Detected", currentRecognitions.size());
 
-        identifiedSpikeMarkLocation = FTCWiresAutonomous.IDENTIFIED_SPIKE_MARK_LOCATION.LEFT;
+        identifiedSpikeMarkLocation = FTCWiresAutonomous.IDENTIFIED_SPIKE_MARK_LOCATION.RIGHT;
 
         // Step through the list of recognitions and display info for each one.
         for (Recognition recognition : currentRecognitions) {
@@ -270,7 +270,7 @@ public class AutonomusRedRight extends LinearOpMode {
                 if (x > 300) {
                     identifiedSpikeMarkLocation = FTCWiresAutonomous.IDENTIFIED_SPIKE_MARK_LOCATION.MIDDLE;
                 } else {
-                    identifiedSpikeMarkLocation = FTCWiresAutonomous.IDENTIFIED_SPIKE_MARK_LOCATION.RIGHT;
+                    identifiedSpikeMarkLocation = FTCWiresAutonomous.IDENTIFIED_SPIKE_MARK_LOCATION.LEFT;
                 }
             }
 

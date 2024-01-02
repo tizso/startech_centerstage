@@ -8,6 +8,10 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
+import com.qualcomm.robotcore.hardware.NormalizedRGBA;
+
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 
 /**
@@ -37,6 +41,9 @@ public class FTCWiresTeleOpMode extends LinearOpMode {
 
         robot.slider.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.hangUp.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        //NormalizedRGBA colors = robot.color.getNormalizedColors();
+
 
 //        robot.slider.setDirection(DcMotorEx.Direction.FORWARD);
 //        robot.slider.setTargetPosition(0);
@@ -149,11 +156,7 @@ public class FTCWiresTeleOpMode extends LinearOpMode {
                 sleep(300);
 
             }
-
-
-
-
-
+            
             if(gamepad2.y){
                 robot.slider.setDirection(DcMotorEx.Direction.FORWARD);
                 robot.slider.setTargetPosition(980);
@@ -208,6 +211,8 @@ public class FTCWiresTeleOpMode extends LinearOpMode {
                 sleep(300);
             }
 
+
+
             telemetry.addLine("Current Pose");
             telemetry.addData("x", drive.pose.position.x);
             telemetry.addData("y", drive.pose.position.y);
@@ -219,6 +224,10 @@ public class FTCWiresTeleOpMode extends LinearOpMode {
             telemetry.addData("dpad_down", gamepad1.dpad_down);
             telemetry.addData("colector get dir: ", robot.colector.getDirection());
             telemetry.addData("hangUp: ", robot.hangUp.getCurrentPosition());
+            /*telemetry.addData("blue: ", colors.blue);
+            telemetry.addData("red: ", colors.red);
+            telemetry.addData("green: ", colors.green);*/
+            //telemetry.addData("distance: ", ((DistanceSensor) robot.color).getDistance(DistanceUnit.CM));
 
             telemetry.update();
         }

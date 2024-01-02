@@ -122,7 +122,7 @@ public class AutonomBlueLeft extends LinearOpMode {
                 break;
             case RIGHT:
                 dropPurplePixelPose = new Pose2d(24, -4.5, Math.toRadians(-45));
-                dropYellowPixelPose = new Pose2d(51, 33.5, Math.toRadians(-84));
+                dropYellowPixelPose = new Pose2d(52, 33.5, Math.toRadians(-85));
                 break;
         }
         midwayPose1 = new Pose2d(10, 13, Math.toRadians(-45));

@@ -2,15 +2,18 @@ package org.firstinspires.ftc.teamcode;
 
 import static com.qualcomm.robotcore.util.ElapsedTime.Resolution.SECONDS;
 
+
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 public class HardwareBox extends LinearOpMode{
+    //public NormalizedColorSensor color;
+
     public DcMotor colector = null;
     public DcMotor intake = null;
     public DcMotor slider = null;
@@ -40,6 +43,8 @@ public class HardwareBox extends LinearOpMode{
         colector    = hwMap.get(DcMotor.class, "colector");
         intake    = hwMap.get(DcMotor.class, "intake");
         hangUp = hwMap.get(DcMotor.class, "hangUp");
+
+        //color = hardwareMap.get(NormalizedColorSensor.class, "color");
 
         // Set all motors to zero power
         slider.setPower(0.0);

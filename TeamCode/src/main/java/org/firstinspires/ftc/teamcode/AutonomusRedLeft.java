@@ -117,7 +117,7 @@ public class AutonomusRedLeft extends LinearOpMode {
                 dropYellowPixelPose = new Pose2d(37, -86, Math.toRadians(90));
                 break;
             case MIDDLE:
-                dropPurplePixelPose = new Pose2d(30, -3, Math.toRadians(0));
+                dropPurplePixelPose = new Pose2d(26, -5, Math.toRadians(0));
                 dropYellowPixelPose = new Pose2d(29, -86, Math.toRadians(90));
                 break;
             case RIGHT:
@@ -125,10 +125,10 @@ public class AutonomusRedLeft extends LinearOpMode {
                 dropYellowPixelPose = new Pose2d(21, -86, Math.toRadians(90));
                 break;
         }
-        midwayPose1 = new Pose2d(8, 8, Math.toRadians(0));
-        midwayPose1a = new Pose2d(18, 18, Math.toRadians(90));
-        intakeStack = new Pose2d(52, 19,Math.toRadians(90));
-        midwayPose2 = new Pose2d(52, -62, Math.toRadians(90));
+        midwayPose1 = new Pose2d(4, 8, Math.toRadians(0));
+        midwayPose1a = new Pose2d(0, 21, Math.toRadians(68));
+        intakeStack = new Pose2d(72, 19,Math.toRadians(80));
+        midwayPose2 = new Pose2d(67, -66, Math.toRadians(85));
         waitSecondsBeforeDrop = 2; //TODO: Adjust time to wait for alliance partner to move from board
         parkPose = new Pose2d(50, -84, Math.toRadians(90));
 
@@ -167,25 +167,29 @@ public class AutonomusRedLeft extends LinearOpMode {
 
         robot.safeWaitSeconds(waitSecondsBeforeDrop);
 
+        //robot.sliderUp();
+
+        robot.safeWaitSeconds(1);
+
         //Move robot to midwayPose2 and to dropYellowPixelPose
-        Actions.runBlocking(
+        /*Actions.runBlocking(
                 drive.actionBuilder(drive.pose)
                         .setReversed(true)
                         .splineToLinearHeading(dropYellowPixelPose,0)
-                        .build());
+                        .build());*/
 
 
         //TODO : Code to drop Pixel on Backdrop
-        robot.dropPixel();
+       //robot.dropPixel();
         //TODO : Code to drop Pixel on Backdrop
 
 
         //Move robot to park in Backstage
-        Actions.runBlocking(
+        /*Actions.runBlocking(
                 drive.actionBuilder(drive.pose)
                         .strafeToLinearHeading(parkPose.position, parkPose.heading)
                         //.splineToLinearHeading(parkPose,0)
-                        .build());
+                        .build());*/
     }
 
     //method to wait safely with stop button working if needed. Use this instead of sleep

@@ -115,12 +115,12 @@ public class AutonomusRedRight extends LinearOpMode {
                 dropYellowPixelPose = new Pose2d(50, -37, Math.toRadians(81));
                 break;
             case MIDDLE:
-                dropPurplePixelPose = new Pose2d(27.5, -3, Math.toRadians(0));
-                dropYellowPixelPose = new Pose2d(36, -35,  Math.toRadians(85));
+                dropPurplePixelPose = new Pose2d(25, -3, Math.toRadians(0));
+                dropYellowPixelPose = new Pose2d(33, -35,  Math.toRadians(85));
                 break;
             case RIGHT:
-                dropPurplePixelPose = new Pose2d(20, -15, Math.toRadians(0));
-                dropYellowPixelPose = new Pose2d(24.5, -35.5, Math.toRadians(85));
+                dropPurplePixelPose = new Pose2d(20, -17, Math.toRadians(0));
+                dropYellowPixelPose = new Pose2d(26, -34.5, Math.toRadians(85));
                 break;
         }
         midwayPose1 = new Pose2d(14, -13, Math.toRadians(45));

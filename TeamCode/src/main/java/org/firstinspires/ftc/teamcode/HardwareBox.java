@@ -100,7 +100,7 @@ public class HardwareBox extends LinearOpMode{
 
     public void sliderUp(){
         slider.setDirection(DcMotorEx.Direction.FORWARD);
-        slider.setTargetPosition(250);
+        slider.setTargetPosition(240);
         slider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         slider.setPower(0.7);
 

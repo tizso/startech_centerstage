@@ -8,10 +8,6 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.DistanceSensor;
-import com.qualcomm.robotcore.hardware.NormalizedRGBA;
-
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 
 /**
@@ -42,13 +38,12 @@ public class FTCWiresTeleOpMode extends LinearOpMode {
         robot.slider.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.hangUp.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        //NormalizedRGBA colors = robot.color.getNormalizedColors();
 
 
-//        robot.slider.setDirection(DcMotorEx.Direction.FORWARD);
-//        robot.slider.setTargetPosition(0);
-//        robot.slider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-//        robot.slider.setPower(0.9);
+        robot.slider.setDirection(DcMotorEx.Direction.FORWARD);
+        robot.slider.setTargetPosition(0);
+        robot.slider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.slider.setPower(0.9);
         sleep(200);
 
         MecanumDrive drive = new MecanumDrive(hardwareMap, new Pose2d(0, 0, 0));
@@ -76,7 +71,7 @@ public class FTCWiresTeleOpMode extends LinearOpMode {
 
             double sliderSpeed = 0.7;
 
-            if(gamepad1.dpad_up && up == 0){
+            /*if(gamepad1.dpad_up && up == 0){
                 robot.slider.setDirection(DcMotorEx.Direction.FORWARD);
                 robot.slider.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
                 robot.slider.setPower(sliderSpeed/4);
@@ -103,7 +98,7 @@ public class FTCWiresTeleOpMode extends LinearOpMode {
                 down = 0;
                 sleep(200);
             }
-
+*/
             if((gamepad1.y || gamepad1.x) && robot.colector.getPower() == 0){
                 robot.colector.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
                 robot.colector.setDirection(gamepad1.x?DcMotorEx.Direction.FORWARD:DcMotorEx.Direction.REVERSE);
@@ -121,24 +116,26 @@ public class FTCWiresTeleOpMode extends LinearOpMode {
             }
 
             if (gamepad1.left_bumper && suportUp == 0) {
-                robot.suport.setPosition(1);
+                robot.suport.setPosition(0.5);
                 sleep(300);
                 suportUp = 1;
+
             }
 
             if (gamepad1.left_bumper && suportUp == 1) {
                 robot.suport.setPosition(0);
                 sleep(300);
                 suportUp = 0;
+                hangUp = 1;
             }
 
-            if (gamepad1.right_bumper) {
+            if (gamepad1.right_bumper && hangUp == 1) {
                 robot.hangUp.setDirection(DcMotorEx.Direction.FORWARD);
-                robot.hangUp.setTargetPosition(17000);
+                robot.hangUp.setTargetPosition(11600);
                 robot.hangUp.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 robot.hangUp.setPower(0.9);
                 sleep(300);
-
+                hangUp = 0;
             }
             /*if (gamepad1.right_bumper && hangUp == 1) {
                 robot.hangUp.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -224,10 +221,6 @@ public class FTCWiresTeleOpMode extends LinearOpMode {
             telemetry.addData("dpad_down", gamepad1.dpad_down);
             telemetry.addData("colector get dir: ", robot.colector.getDirection());
             telemetry.addData("hangUp: ", robot.hangUp.getCurrentPosition());
-            /*telemetry.addData("blue: ", colors.blue);
-            telemetry.addData("red: ", colors.red);
-            telemetry.addData("green: ", colors.green);*/
-            //telemetry.addData("distance: ", ((DistanceSensor) robot.color).getDistance(DistanceUnit.CM));
 
             telemetry.update();
         }

@@ -1,22 +1,16 @@
 package org.firstinspires.ftc.teamcode;
 
-import static com.qualcomm.robotcore.util.ElapsedTime.Resolution.SECONDS;
-
-import android.util.Size;
-
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.vision.VisionPortal;
-import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 import org.firstinspires.ftc.vision.tfod.TfodProcessor;
 
 import java.util.List;
@@ -30,19 +24,13 @@ public class AutonomBlueLeft extends LinearOpMode {
 
     private static final boolean USE_WEBCAM = true;  // true for webcam, false for phone camera
 
-    /**
-     * The variable to store our instance of the AprilTag processor.
-     */
-    private AprilTagProcessor aprilTag;
-
-    private static final String TFOD_MODEL_FILE = "/sdcard/FIRST/tflitemodels/startech2.tflite";
+    private static final String TFOD_MODEL_FILE = "/sdcard/FIRST/tflitemodels/model_20240106_160015.tflite";
 
     /**
      * If we use default object, Pixels, change the labels name from "stratech" to "Pixel"
      * */
     private static final String[] LABELS = {
-            "StarTechBLue",
-            "StarTechRed"
+            "StarTech"
     };
 
     //Vision parameters
@@ -68,7 +56,7 @@ public class AutonomBlueLeft extends LinearOpMode {
         robot.colector.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         robot.slider.setDirection(DcMotorEx.Direction.FORWARD);
-        robot.slider.setTargetPosition(20);
+        robot.slider.setTargetPosition(0);
         robot.slider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.slider.setPower(0.9);
         sleep(200);
@@ -92,6 +80,7 @@ public class AutonomBlueLeft extends LinearOpMode {
             //Build parking trajectory based on last detected target by vision
             runAutonoumousMode();
         }
+        visionPortal.close();
     }   // end runOpMode()
 
     public void runAutonoumousMode() {
@@ -107,30 +96,33 @@ public class AutonomBlueLeft extends LinearOpMode {
         MecanumDrive drive = new MecanumDrive(hardwareMap, initPose);
 
         initPose = new Pose2d(0, 0, Math.toRadians(0)); //Starting pose
-        moveBeyondTrussPose = new Pose2d(15,0,0);
+        moveBeyondTrussPose = new Pose2d(10,0,0);
 
         //identified Spike Mark Location
         drive = new MecanumDrive(hardwareMap, initPose);
         switch(identifiedSpikeMarkLocation){
             case LEFT:
-                dropPurplePixelPose = new Pose2d(18, 17, Math.toRadians(0));
-                dropYellowPixelPose = new Pose2d(29.5, 35, Math.toRadians(-85));
+                dropPurplePixelPose = new Pose2d(10, 15, Math.toRadians(0));
+                midwayPose1 = new Pose2d(8, 13, Math.toRadians(-45));
+                dropYellowPixelPose = new Pose2d(17, 30.4, Math.toRadians(-84));
                 break;
             case MIDDLE:
-                dropPurplePixelPose = new Pose2d(26.5, 2, Math.toRadians(0));
-                dropYellowPixelPose = new Pose2d(41, 33,  Math.toRadians(-85));
+                dropPurplePixelPose = new Pose2d(20, 2, Math.toRadians(0));
+                midwayPose1 = new Pose2d(10, 13, Math.toRadians(-45));
+                dropYellowPixelPose = new Pose2d(31, 29.5,  Math.toRadians(-85));
                 break;
             case RIGHT:
-                dropPurplePixelPose = new Pose2d(24, -4.5, Math.toRadians(-45));
-                dropYellowPixelPose = new Pose2d(52, 33.5, Math.toRadians(-85));
+                dropPurplePixelPose = new Pose2d(21, -7, Math.toRadians(-42));
+                midwayPose1 = new Pose2d(24, 13, Math.toRadians(-60));
+                dropYellowPixelPose = new Pose2d(39, 33, Math.toRadians(-80));
                 break;
         }
-        midwayPose1 = new Pose2d(10, 13, Math.toRadians(-45));
-        waitSecondsBeforeDrop = 2; //TODO: Adjust time to wait for alliance partner to move from board
+
+        waitSecondsBeforeDrop = 1; //TODO: Adjust time to wait for alliance partner to move from board
 
         //parking left side
-        parkPose1 = new Pose2d(-5, 32, Math.toRadians(-83));
-        parkPose2 = new Pose2d(-5, 45, Math.toRadians(-83));
+        parkPose1 = new Pose2d(0, 28, Math.toRadians(-83));
+        //parkPose2 = new Pose2d(-5, 30, Math.toRadians(-83));
 
         //parking right side
         /*parkPose1 = new Pose2d(60, 30, Math.toRadians(-90));
@@ -159,10 +151,6 @@ public class AutonomBlueLeft extends LinearOpMode {
 
         robot.safeWaitSeconds(waitSecondsBeforeDrop);
 
-        robot.sliderUp();
-
-        robot.safeWaitSeconds(1);
-
         //Move robot to midwayPose2 and to dropYellowPixelPose
         Actions.runBlocking(
                 drive.actionBuilder(drive.pose)
@@ -170,7 +158,10 @@ public class AutonomBlueLeft extends LinearOpMode {
                         .splineToLinearHeading(dropYellowPixelPose,0)
                         .build());
         //TODO : Code to drop Pixel on Backdrop
+        robot.safeWaitSeconds(1);
+        robot.sliderUp();
 
+        robot.safeWaitSeconds(0.5);
         robot.dropPixel();
 
         //TODO : Code to drop Pixel on Backdrop
@@ -182,11 +173,12 @@ public class AutonomBlueLeft extends LinearOpMode {
                         .strafeToLinearHeading(parkPose1.position, parkPose1.heading)
                         //.splineToLinearHeading(parkPose,0)
                         .build());
-        Actions.runBlocking(
+        robot.safeWaitSeconds(0.5);
+        /*Actions.runBlocking(
                 drive.actionBuilder(drive.pose)
                         .strafeToLinearHeading(parkPose2.position, parkPose2.heading)
                         //.splineToLinearHeading(parkPose,0)
-                        .build());
+                        .build());*/
     }
 
 
@@ -202,16 +194,6 @@ public class AutonomBlueLeft extends LinearOpMode {
      * Initialize the TensorFlow Object Detection processor.
      */
     private void initTfod() {
-        // -----------------------------------------------------------------------------------------
-        // AprilTag Configuration
-        // -----------------------------------------------------------------------------------------
-        double fx = 946.461;
-        double fy = 946.136;
-        double cx = 312.211;
-        double cy = 211.465;
-        aprilTag = new AprilTagProcessor.Builder()
-                .setLensIntrinsics(fx, fy, cx, cy)
-                .build();
 
         tfod = new TfodProcessor.Builder()
                 // With the following lines commented out, the default TfodProcessor Builder
@@ -226,27 +208,41 @@ public class AutonomBlueLeft extends LinearOpMode {
                 // set parameters for custom models.
                 .setModelLabels(LABELS)
                 .setIsModelTensorFlow2(true)
-                .setIsModelQuantized(true)
-                .setModelInputSize(1200)
+                //.setIsModelQuantized(true)
+                .setModelInputSize(300)
                 .setModelAspectRatio(16.0 / 9.0)
                 .build();
-        tfod.setMinResultConfidence(0.75f);
 
+        VisionPortal.Builder builder = new VisionPortal.Builder();
         // Create the vision portal the easy way.
         if (USE_WEBCAM) {
-            visionPortal = new VisionPortal.Builder()
-                    .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"))
-                    .addProcessors(tfod, aprilTag)
-                    .enableLiveView(true)
-                    .setCameraResolution(new Size(640, 480))
-                    .build();
+            builder.setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"));
         } else {
-            visionPortal = new VisionPortal.Builder()
-                    .setCamera(BuiltinCameraDirection.BACK)
-                    .addProcessors(tfod, aprilTag)
-                    .build();
+            builder.setCamera(BuiltinCameraDirection.BACK);
         }
 
+        // Choose a camera resolution. Not all cameras support all resolutions.
+        //builder.setCameraResolution(new Size(640, 480));
+
+        // Enable the RC preview (LiveView).  Set "false" to omit camera monitoring.
+        //builder.enableLiveView(true);
+
+        // Set the stream format; MJPEG uses less bandwidth than default YUY2.
+        //builder.setStreamFormat(VisionPortal.StreamFormat.YUY2);
+
+        // Choose whether or not LiveView stops if no processors are enabled.
+        // If set "true", monitor shows solid orange screen if no processors enabled.
+        // If set "false", monitor shows camera view without annotations.
+        //builder.setAutoStopLiveView(false);
+
+        // Set and enable the processor.
+        builder.addProcessor(tfod);
+
+        // Build the Vision Portal, using the above settings.
+        visionPortal = builder.build();
+
+        // Set confidence threshold for TFOD recognitions, at any time.
+        tfod.setMinResultConfidence(0.90f);
 
     }   // end method initTfod()
 
@@ -271,7 +267,7 @@ public class AutonomBlueLeft extends LinearOpMode {
             telemetry.addData("- Position", "%.0f / %.0f", x, y);
             telemetry.addData("- Size", "%.0f x %.0f", recognition.getWidth(), recognition.getHeight());
 
-            if (recognition.getLabel() == "StarTechBLue" && recognition.getConfidence()>0.75) {
+            if (recognition.getLabel() == "StarTech" && recognition.getConfidence()>=0.90) {
                 if (x < 200) {
                     identifiedSpikeMarkLocation = IDENTIFIED_SPIKE_MARK_LOCATION.LEFT;
                 } else {

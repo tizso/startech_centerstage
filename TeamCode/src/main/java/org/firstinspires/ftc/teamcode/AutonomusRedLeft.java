@@ -30,19 +30,13 @@ public class AutonomusRedLeft extends LinearOpMode {
 
     private static final boolean USE_WEBCAM = true;  // true for webcam, false for phone camera
 
-    /**
-     * The variable to store our instance of the AprilTag processor.
-     */
-    private AprilTagProcessor aprilTag;
-
-    private static final String TFOD_MODEL_FILE = "/sdcard/FIRST/tflitemodels/startech2.tflite";
+    private static final String TFOD_MODEL_FILE = "/sdcard/FIRST/tflitemodels/model_20240106_160015.tflite";
 
     /**
      * If we use default object, Pixels, change the labels name from "stratech" to "Pixel"
      * */
     private static final String[] LABELS = {
-            "StarTechBLue",
-            "StarTechRed"
+            "StarTech"
     };
 
     //Vision parameters
@@ -54,7 +48,7 @@ public class AutonomusRedLeft extends LinearOpMode {
         MIDDLE,
         RIGHT
     }
-    public static FTCWiresAutonomous.IDENTIFIED_SPIKE_MARK_LOCATION identifiedSpikeMarkLocation = FTCWiresAutonomous.IDENTIFIED_SPIKE_MARK_LOCATION.LEFT;
+    public static IDENTIFIED_SPIKE_MARK_LOCATION identifiedSpikeMarkLocation = IDENTIFIED_SPIKE_MARK_LOCATION.LEFT;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -67,7 +61,7 @@ public class AutonomusRedLeft extends LinearOpMode {
         robot.colector.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         robot.slider.setDirection(DcMotorEx.Direction.FORWARD);
-        robot.slider.setTargetPosition(10);
+        robot.slider.setTargetPosition(0);
         robot.slider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.slider.setPower(0.9);
         sleep(200);
@@ -91,6 +85,7 @@ public class AutonomusRedLeft extends LinearOpMode {
             //Build parking trajectory based on last detected target by vision
             runAutonoumousMode();
         }
+        visionPortal.close();
     }   // end runOpMode()
 
     public void runAutonoumousMode() {
@@ -113,26 +108,29 @@ public class AutonomusRedLeft extends LinearOpMode {
         drive = new MecanumDrive(hardwareMap, initPose);
         switch(identifiedSpikeMarkLocation){
             case LEFT:
-                dropPurplePixelPose = new Pose2d(17, 12.5, Math.toRadians(0));
+                dropPurplePixelPose = new Pose2d(13, 13.5, Math.toRadians(0));
+                midwayPose1 = new Pose2d(7, 8, Math.toRadians(0));
                 dropYellowPixelPose = new Pose2d(36, -85.5, Math.toRadians(90));
-                intakeStack = new Pose2d(72, 19,Math.toRadians(80));
+                intakeStack = new Pose2d(75, 19,Math.toRadians(80));
                 midwayPose2 = new Pose2d(64, -66, Math.toRadians(85));
                 break;
             case MIDDLE:
-                dropPurplePixelPose = new Pose2d(26, -5, Math.toRadians(0));
+                dropPurplePixelPose = new Pose2d(20, -2, Math.toRadians(0));
+                midwayPose1 = new Pose2d(10, 8, Math.toRadians(0));
                 dropYellowPixelPose = new Pose2d(24, -86, Math.toRadians(90));
-                intakeStack = new Pose2d(72, 19,Math.toRadians(80));
+                intakeStack = new Pose2d(75, 19,Math.toRadians(80));
                 midwayPose2 = new Pose2d(64, -66, Math.toRadians(85));
                 break;
             case RIGHT:
-                dropPurplePixelPose = new Pose2d(23, -6, Math.toRadians(-40));
+                dropPurplePixelPose = new Pose2d(20, -8, Math.toRadians(-40));
+                midwayPose1 = new Pose2d(7, 8, Math.toRadians(0));
                 dropYellowPixelPose = new Pose2d(15, -86, Math.toRadians(90));
                 intakeStack = new Pose2d(69, 19,Math.toRadians(80));
                 midwayPose2 = new Pose2d(61, -66, Math.toRadians(85));
                 break;
         }
-        midwayPose1 = new Pose2d(4, 8, Math.toRadians(0));
-        midwayPose1a = new Pose2d(0, 23, Math.toRadians(68));
+
+        midwayPose1a = new Pose2d(3, 23, Math.toRadians(68));
 
         waitSecondsBeforeDrop = 2; //TODO: Adjust time to wait for alliance partner to move from board
         parkPose = new Pose2d(60, -84, Math.toRadians(90));
@@ -155,17 +153,23 @@ public class AutonomusRedLeft extends LinearOpMode {
                         .strafeToLinearHeading(midwayPose1.position, midwayPose1.heading)
                         .build());
 
-        Actions.runBlocking(
+        /*Actions.runBlocking(
                 drive.actionBuilder(drive.pose)
                         .strafeToLinearHeading(midwayPose1a.position, midwayPose1a.heading)
                         .strafeToLinearHeading(intakeStack.position, intakeStack.heading)
-                        .build());
+                        .build());*/
 
         //TODO : Code to intake pixel from stack
-        robot.safeWaitSeconds(1);
+        //robot.safeWaitSeconds(0.5);
 
+        /*robot.slider.setDirection(DcMotorEx.Direction.FORWARD);
+        robot.slider.setTargetPosition(0);
+        robot.slider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.slider.setPower(0.7);
+
+        robot.safeWaitSeconds(0.5);*/
         //Move robot to midwayPose2 and to dropYellowPixelPose
-        Actions.runBlocking(
+        /*Actions.runBlocking(
                 drive.actionBuilder(drive.pose)
                         .strafeToLinearHeading(midwayPose2.position, midwayPose2.heading)
                         .build());
@@ -174,27 +178,27 @@ public class AutonomusRedLeft extends LinearOpMode {
 
         robot.sliderUp();
 
-        robot.safeWaitSeconds(1);
+        robot.safeWaitSeconds(1);*/
 
         //Move robot to midwayPose2 and to dropYellowPixelPose
-        Actions.runBlocking(
+        /*Actions.runBlocking(
                 drive.actionBuilder(drive.pose)
                         .setReversed(true)
                         .splineToLinearHeading(dropYellowPixelPose,0)
-                        .build());
+                        .build());*/
 
 
         //TODO : Code to drop Pixel on Backdrop
-        robot.dropPixel();
+        //robot.dropPixel();
         //TODO : Code to drop Pixel on Backdrop
 
 
         //Move robot to park in Backstage
-        Actions.runBlocking(
+        /*Actions.runBlocking(
                 drive.actionBuilder(drive.pose)
                         .strafeToLinearHeading(parkPose.position, parkPose.heading)
                         //.splineToLinearHeading(parkPose,0)
-                        .build());
+                        .build());*/
     }
 
     //method to wait safely with stop button working if needed. Use this instead of sleep
@@ -204,16 +208,6 @@ public class AutonomusRedLeft extends LinearOpMode {
      * Initialize the TensorFlow Object Detection processor.
      */
     private void initTfod() {
-        // -----------------------------------------------------------------------------------------
-        // AprilTag Configuration
-        // -----------------------------------------------------------------------------------------
-        double fx = 946.461;
-        double fy = 946.136;
-        double cx = 312.211;
-        double cy = 211.465;
-        aprilTag = new AprilTagProcessor.Builder()
-                .setLensIntrinsics(fx, fy, cx, cy)
-                .build();
 
         tfod = new TfodProcessor.Builder()
                 // With the following lines commented out, the default TfodProcessor Builder
@@ -228,27 +222,40 @@ public class AutonomusRedLeft extends LinearOpMode {
                 // set parameters for custom models.
                 .setModelLabels(LABELS)
                 .setIsModelTensorFlow2(true)
-                .setIsModelQuantized(true)
-                .setModelInputSize(1200)
+                //.setIsModelQuantized(true)
+                .setModelInputSize(300)
                 .setModelAspectRatio(16.0 / 9.0)
                 .build();
-        tfod.setMinResultConfidence(0.75f);
 
+        VisionPortal.Builder builder = new VisionPortal.Builder();
         // Create the vision portal the easy way.
         if (USE_WEBCAM) {
-            visionPortal = new VisionPortal.Builder()
-                    .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"))
-                    .addProcessors(tfod, aprilTag)
-                    .enableLiveView(true)
-                    .setCameraResolution(new Size(640, 480))
-                    .build();
+            builder.setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"));
         } else {
-            visionPortal = new VisionPortal.Builder()
-                    .setCamera(BuiltinCameraDirection.BACK)
-                    .addProcessors(tfod, aprilTag)
-                    .build();
+            builder.setCamera(BuiltinCameraDirection.BACK);
         }
+        // Choose a camera resolution. Not all cameras support all resolutions.
+        //builder.setCameraResolution(new Size(640, 480));
 
+        // Enable the RC preview (LiveView).  Set "false" to omit camera monitoring.
+        //builder.enableLiveView(true);
+
+        // Set the stream format; MJPEG uses less bandwidth than default YUY2.
+        //builder.setStreamFormat(VisionPortal.StreamFormat.YUY2);
+
+        // Choose whether or not LiveView stops if no processors are enabled.
+        // If set "true", monitor shows solid orange screen if no processors enabled.
+        // If set "false", monitor shows camera view without annotations.
+        //builder.setAutoStopLiveView(false);
+
+        // Set and enable the processor.
+        builder.addProcessor(tfod);
+
+        // Build the Vision Portal, using the above settings.
+        visionPortal = builder.build();
+
+        // Set confidence threshold for TFOD recognitions, at any time.
+        //tfod.setMinResultConfidence(0.75f);
 
     }   // end method initTfod()
 
@@ -261,7 +268,7 @@ public class AutonomusRedLeft extends LinearOpMode {
         telemetry.addData("# Objects Detected", currentRecognitions.size());
 
         //Camera placed between Left and Right Spike Mark on RED_LEFT and BLUE_LEFT If pixel not visible, assume Right spike Mark
-        identifiedSpikeMarkLocation = FTCWiresAutonomous.IDENTIFIED_SPIKE_MARK_LOCATION.RIGHT;
+        identifiedSpikeMarkLocation = IDENTIFIED_SPIKE_MARK_LOCATION.RIGHT;
 
         // Step through the list of recognitions and display info for each one.
         for (Recognition recognition : currentRecognitions) {
@@ -273,11 +280,11 @@ public class AutonomusRedLeft extends LinearOpMode {
             telemetry.addData("- Position", "%.0f / %.0f", x, y);
             telemetry.addData("- Size", "%.0f x %.0f", recognition.getWidth(), recognition.getHeight());
 
-            if (recognition.getLabel() == "StarTechRed" && recognition.getConfidence()>0.75) {
+            if (recognition.getLabel() == "StarTech" && recognition.getConfidence()>0.80) {
                 if (x < 200) {
-                    identifiedSpikeMarkLocation = FTCWiresAutonomous.IDENTIFIED_SPIKE_MARK_LOCATION.LEFT;
+                    identifiedSpikeMarkLocation = IDENTIFIED_SPIKE_MARK_LOCATION.LEFT;
                 } else {
-                    identifiedSpikeMarkLocation = FTCWiresAutonomous.IDENTIFIED_SPIKE_MARK_LOCATION.MIDDLE;
+                    identifiedSpikeMarkLocation = IDENTIFIED_SPIKE_MARK_LOCATION.MIDDLE;
                 }
             }
 

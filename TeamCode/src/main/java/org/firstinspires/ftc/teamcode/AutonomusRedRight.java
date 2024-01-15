@@ -29,19 +29,13 @@ public class AutonomusRedRight extends LinearOpMode {
 
     private static final boolean USE_WEBCAM = true;  // true for webcam, false for phone camera
 
-    /**
-     * The variable to store our instance of the AprilTag processor.
-     */
-    private AprilTagProcessor aprilTag;
-
-    private static final String TFOD_MODEL_FILE = "/sdcard/FIRST/tflitemodels/startech2.tflite";
+    private static final String TFOD_MODEL_FILE = "/sdcard/FIRST/tflitemodels/model_20240106_160015.tflite";
 
     /**
-     * If we use default object, Pixels, change the labels name from "stratech" to "Pixel"
+     * If we use default object, Pixels, change the labels name from "StraTech" to "Pixel"
      * */
     private static final String[] LABELS = {
-            "StarTechBLue",
-            "StarTechRed"
+            "StarTech"
     };
 
     //Vision parameters
@@ -54,7 +48,7 @@ public class AutonomusRedRight extends LinearOpMode {
         MIDDLE,
         RIGHT
     }
-    public static FTCWiresAutonomous.IDENTIFIED_SPIKE_MARK_LOCATION identifiedSpikeMarkLocation = FTCWiresAutonomous.IDENTIFIED_SPIKE_MARK_LOCATION.LEFT;
+    public static IDENTIFIED_SPIKE_MARK_LOCATION identifiedSpikeMarkLocation = IDENTIFIED_SPIKE_MARK_LOCATION.LEFT;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -67,7 +61,7 @@ public class AutonomusRedRight extends LinearOpMode {
         robot.colector.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         robot.slider.setDirection(DcMotorEx.Direction.FORWARD);
-        robot.slider.setTargetPosition(20);
+        robot.slider.setTargetPosition(0);
         robot.slider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.slider.setPower(0.9);
         sleep(200);
@@ -91,6 +85,7 @@ public class AutonomusRedRight extends LinearOpMode {
             //Build parking trajectory based on last detected target by vision
             runAutonoumousMode();
         }
+        visionPortal.close();
     }   // end runOpMode()
 
     public void runAutonoumousMode() {
@@ -111,19 +106,22 @@ public class AutonomusRedRight extends LinearOpMode {
         drive = new MecanumDrive(hardwareMap, initPose);
         switch(identifiedSpikeMarkLocation){
             case LEFT:
-                dropPurplePixelPose = new Pose2d(28.5, 2, Math.toRadians(45));
-                dropYellowPixelPose = new Pose2d(50, -37, Math.toRadians(81));
+                dropPurplePixelPose = new Pose2d(21, 2, Math.toRadians(42));
+                midwayPose1 = new Pose2d(14, -13, Math.toRadians(60));
+                dropYellowPixelPose = new Pose2d(48, -15.5, Math.toRadians(78));
                 break;
             case MIDDLE:
-                dropPurplePixelPose = new Pose2d(25, -3, Math.toRadians(0));
-                dropYellowPixelPose = new Pose2d(33, -35,  Math.toRadians(85));
+                dropPurplePixelPose = new Pose2d(20.5, -6, Math.toRadians(0));
+                midwayPose1 = new Pose2d(14, -13, Math.toRadians(45));
+                dropYellowPixelPose = new Pose2d(38, -16.6,  Math.toRadians(80));
                 break;
             case RIGHT:
-                dropPurplePixelPose = new Pose2d(20, -17, Math.toRadians(0));
-                dropYellowPixelPose = new Pose2d(26, -34.5, Math.toRadians(85));
+                dropPurplePixelPose = new Pose2d(14, -17, Math.toRadians(0));
+                midwayPose1 = new Pose2d(12, -13, Math.toRadians(45));
+                dropYellowPixelPose = new Pose2d(28.5, -17, Math.toRadians(83));
                 break;
         }
-        midwayPose1 = new Pose2d(14, -13, Math.toRadians(45));
+
         waitSecondsBeforeDrop = 2; //TODO: Adjust time to wait for alliance partner to move from board
         //parkPose = new Pose2d(8, -30, Math.toRadians(90));
 
@@ -132,7 +130,7 @@ public class AutonomusRedRight extends LinearOpMode {
         //parkPose2 = new Pose2d(0, 40, Math.toRadians(90));
 
         //parking right side
-        parkPose1 = new Pose2d(-5, -30, Math.toRadians(90));
+        parkPose1 = new Pose2d(50, -14, Math.toRadians(90));
         parkPose2 = new Pose2d(-5, -40, Math.toRadians(90));
 
         //Move robot to dropPurplePixel based on identified Spike Mark Location
@@ -153,11 +151,9 @@ public class AutonomusRedRight extends LinearOpMode {
                 drive.actionBuilder(drive.pose)
                         .strafeToLinearHeading(midwayPose1.position, midwayPose1.heading)
                         .build());
-
         robot.safeWaitSeconds(waitSecondsBeforeDrop);
 
-        robot.sliderUp();
-        robot.safeWaitSeconds(1);
+
 
         //Move robot to midwayPose2 and to dropYellowPixelPose
         Actions.runBlocking(
@@ -167,7 +163,10 @@ public class AutonomusRedRight extends LinearOpMode {
                         .build());
 
         //TODO : Code to drop Pixel on Backdrop
+        robot.safeWaitSeconds(1);
+        robot.sliderUp();
 
+        robot.safeWaitSeconds(0.5);
         robot.dropPixel();
 
         //TODO : Code to drop Pixel on Backdrop
@@ -182,11 +181,11 @@ public class AutonomusRedRight extends LinearOpMode {
                         .strafeToLinearHeading(parkPose1.position, parkPose1.heading)
                         //.splineToLinearHeading(parkPose,0)
                         .build());
-        Actions.runBlocking(
+        /*Actions.runBlocking(
                 drive.actionBuilder(drive.pose)
                         .strafeToLinearHeading(parkPose2.position, parkPose2.heading)
                         //.splineToLinearHeading(parkPose,0)
-                        .build());
+                        .build());*/
     }
 
     //method to wait safely with stop button working if needed. Use this instead of sleep
@@ -201,16 +200,6 @@ public class AutonomusRedRight extends LinearOpMode {
      * Initialize the TensorFlow Object Detection processor.
      */
     private void initTfod() {
-        // -----------------------------------------------------------------------------------------
-        // AprilTag Configuration
-        // -----------------------------------------------------------------------------------------
-        double fx = 946.461;
-        double fy = 946.136;
-        double cx = 312.211;
-        double cy = 211.465;
-        aprilTag = new AprilTagProcessor.Builder()
-                .setLensIntrinsics(fx, fy, cx, cy)
-                .build();
 
         tfod = new TfodProcessor.Builder()
                 // With the following lines commented out, the default TfodProcessor Builder
@@ -225,26 +214,41 @@ public class AutonomusRedRight extends LinearOpMode {
                 // set parameters for custom models.
                 .setModelLabels(LABELS)
                 .setIsModelTensorFlow2(true)
-                .setIsModelQuantized(true)
-                .setModelInputSize(1200)
+                //.setIsModelQuantized(true)
+                .setModelInputSize(300)
                 .setModelAspectRatio(16.0 / 9.0)
                 .build();
-        tfod.setMinResultConfidence(0.75f);
 
+        VisionPortal.Builder builder = new VisionPortal.Builder();
         // Create the vision portal the easy way.
         if (USE_WEBCAM) {
-            visionPortal = new VisionPortal.Builder()
-                    .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"))
-                    .addProcessors(tfod, aprilTag)
-                    .enableLiveView(true)
-                    .setCameraResolution(new Size(640, 480))
-                    .build();
+            builder.setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"));
         } else {
-            visionPortal = new VisionPortal.Builder()
-                    .setCamera(BuiltinCameraDirection.BACK)
-                    .addProcessors(tfod, aprilTag)
-                    .build();
+            builder.setCamera(BuiltinCameraDirection.BACK);
         }
+
+        // Choose a camera resolution. Not all cameras support all resolutions.
+        //builder.setCameraResolution(new Size(640, 480));
+
+        // Enable the RC preview (LiveView).  Set "false" to omit camera monitoring.
+        //builder.enableLiveView(true);
+
+        // Set the stream format; MJPEG uses less bandwidth than default YUY2.
+        //builder.setStreamFormat(VisionPortal.StreamFormat.YUY2);
+
+        // Choose whether or not LiveView stops if no processors are enabled.
+        // If set "true", monitor shows solid orange screen if no processors enabled.
+        // If set "false", monitor shows camera view without annotations.
+        //builder.setAutoStopLiveView(false);
+
+        // Set and enable the processor.
+        builder.addProcessor(tfod);
+
+        // Build the Vision Portal, using the above settings.
+        visionPortal = builder.build();
+
+        // Set confidence threshold for TFOD recognitions, at any time.
+        tfod.setMinResultConfidence(0.85f);
 
 
     }   // end method initTfod()
@@ -257,7 +261,7 @@ public class AutonomusRedRight extends LinearOpMode {
         List<Recognition> currentRecognitions = tfod.getRecognitions();
         telemetry.addData("# Objects Detected", currentRecognitions.size());
 
-        identifiedSpikeMarkLocation = FTCWiresAutonomous.IDENTIFIED_SPIKE_MARK_LOCATION.RIGHT;
+        identifiedSpikeMarkLocation = IDENTIFIED_SPIKE_MARK_LOCATION.RIGHT;
 
         // Step through the list of recognitions and display info for each one.
         for (Recognition recognition : currentRecognitions) {
@@ -269,11 +273,11 @@ public class AutonomusRedRight extends LinearOpMode {
             telemetry.addData("- Position", "%.0f / %.0f", x, y);
             telemetry.addData("- Size", "%.0f x %.0f", recognition.getWidth(), recognition.getHeight());
 
-            if (recognition.getLabel() == "StarTechRed" && recognition.getConfidence()>0.75) {
+            if (recognition.getLabel() == "StarTech" && recognition.getConfidence()>=0.90) {
                 if (x > 300) {
-                    identifiedSpikeMarkLocation = FTCWiresAutonomous.IDENTIFIED_SPIKE_MARK_LOCATION.MIDDLE;
+                    identifiedSpikeMarkLocation = IDENTIFIED_SPIKE_MARK_LOCATION.MIDDLE;
                 } else {
-                    identifiedSpikeMarkLocation = FTCWiresAutonomous.IDENTIFIED_SPIKE_MARK_LOCATION.LEFT;
+                    identifiedSpikeMarkLocation = IDENTIFIED_SPIKE_MARK_LOCATION.LEFT;
                 }
             }
 

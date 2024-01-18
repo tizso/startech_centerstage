@@ -248,7 +248,7 @@ public class AutonomusRedRight extends LinearOpMode {
         visionPortal = builder.build();
 
         // Set confidence threshold for TFOD recognitions, at any time.
-        tfod.setMinResultConfidence(0.85f);
+        //tfod.setMinResultConfidence(0.85f);
 
 
     }   // end method initTfod()
@@ -273,7 +273,7 @@ public class AutonomusRedRight extends LinearOpMode {
             telemetry.addData("- Position", "%.0f / %.0f", x, y);
             telemetry.addData("- Size", "%.0f x %.0f", recognition.getWidth(), recognition.getHeight());
 
-            if (recognition.getLabel() == "StarTech" && recognition.getConfidence()>=0.90) {
+            if (recognition.getLabel() == "StarTech" && recognition.getConfidence()>=0.75) {
                 if (x > 300) {
                     identifiedSpikeMarkLocation = IDENTIFIED_SPIKE_MARK_LOCATION.MIDDLE;
                 } else {

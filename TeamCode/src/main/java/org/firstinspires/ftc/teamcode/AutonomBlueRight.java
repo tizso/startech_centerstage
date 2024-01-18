@@ -109,22 +109,25 @@ public class AutonomBlueRight extends LinearOpMode {
         drive = new MecanumDrive(hardwareMap, initPose);
         switch(identifiedSpikeMarkLocation){
             case LEFT:
-                dropPurplePixelPose = new Pose2d(23, 2, Math.toRadians(45));
-                dropYellowPixelPose = new Pose2d(15, 82, Math.toRadians(-90));
+                dropPurplePixelPose = new Pose2d(24, 3, Math.toRadians(45));
+                dropYellowPixelPose = new Pose2d(11, 61.5, Math.toRadians(-90));
+                intakeStack = new Pose2d(68, -9,Math.toRadians(-85));
                 break;
             case MIDDLE:
                 dropPurplePixelPose = new Pose2d(20, -2, Math.toRadians(0));
-                dropYellowPixelPose = new Pose2d(30, 84, Math.toRadians(-90));
+                dropYellowPixelPose = new Pose2d(22.5, 66.5, Math.toRadians(-90));
+                intakeStack = new Pose2d(70, -10,Math.toRadians(-85));
                 break;
             case RIGHT:
                 dropPurplePixelPose = new Pose2d(15, -16.5, Math.toRadians(0));
-                dropYellowPixelPose = new Pose2d(34, 84, Math.toRadians(-90));
+                dropYellowPixelPose = new Pose2d(32, 68.5, Math.toRadians(-90));
+                intakeStack = new Pose2d(75, -10,Math.toRadians(-85));
                 break;
         }
         midwayPose1 = new Pose2d(4, -8, Math.toRadians(0));
-        midwayPose1a = new Pose2d(0, -21, Math.toRadians(-68));
-        intakeStack = new Pose2d(70, -24,Math.toRadians(-85));
-        midwayPose2 = new Pose2d(70, 62, Math.toRadians(-85));
+        midwayPose1a = new Pose2d(0, -19, Math.toRadians(-67));
+
+        midwayPose2 = new Pose2d(38, 47, Math.toRadians(-85));
         waitSecondsBeforeDrop = 2; //TODO: Adjust time to wait for alliance partner to move from board
         parkPose = new Pose2d(55, 84, Math.toRadians(-90));
 
@@ -147,38 +150,40 @@ public class AutonomBlueRight extends LinearOpMode {
                         .strafeToLinearHeading(midwayPose1.position, midwayPose1.heading)
                         .build());
 
-        /*Actions.runBlocking(
+        Actions.runBlocking(
                 drive.actionBuilder(drive.pose)
                         .strafeToLinearHeading(midwayPose1a.position, midwayPose1a.heading)
                         .strafeToLinearHeading(intakeStack.position, intakeStack.heading)
-                        .build());*/
+                        .build());
 
         //TODO : Code to intake pixel from stack
-        //robot.safeWaitSeconds(1);
+        robot.safeWaitSeconds(1);
 
         //Move robot to midwayPose2 and to dropYellowPixelPose
-        /*Actions.runBlocking(
+        Actions.runBlocking(
                 drive.actionBuilder(drive.pose)
                         .strafeToLinearHeading(midwayPose2.position, midwayPose2.heading)
                         .build());
 
         robot.safeWaitSeconds(waitSecondsBeforeDrop);
 
-        robot.sliderUp();
 
-        robot.safeWaitSeconds(1);*/
+
+        //
         //Move robot to midwayPose2 and to dropYellowPixelPose
-        /*Actions.runBlocking(
+        Actions.runBlocking(
                 drive.actionBuilder(drive.pose)
                         .setReversed(true)
                         .splineToLinearHeading(dropYellowPixelPose,0)
                         .build());
-*/
 
         //TODO : Code to drop Pixel on Backdrop
-        //robot.dropPixel();
+        robot.safeWaitSeconds(1);
+        robot.sliderUp();
+        robot.safeWaitSeconds(0.5);
+        robot.dropPixel();
         //TODO : Code to drop Pixel on Backdrop
-        //robot.safeWaitSeconds(1);
+        robot.safeWaitSeconds(1);
 
         //Move robot to park in Backstage
         /*Actions.runBlocking(

@@ -110,7 +110,7 @@ public class AutonomusRedLeft extends LinearOpMode {
         drive = new MecanumDrive(hardwareMap, initPose);
         switch(identifiedSpikeMarkLocation){
             case LEFT:
-                dropPurplePixelPose = new Pose2d(11, 14.5, Math.toRadians(0));
+                dropPurplePixelPose = new Pose2d(11, 17.5, Math.toRadians(0));
                 midwayPose1 = new Pose2d(5, -14.5, Math.toRadians(0));
                 intakeStack = new Pose2d(42, -12.5,Math.toRadians(0));
                 midwayPose1b = new Pose2d(43, -16, Math.toRadians(58));
@@ -121,7 +121,7 @@ public class AutonomusRedLeft extends LinearOpMode {
             case MIDDLE:
                 dropPurplePixelPose = new Pose2d(19.5, -2, Math.toRadians(0));
                 midwayPose1 = new Pose2d(5, 20, Math.toRadians(0));
-                intakeStack = new Pose2d(32, 20,Math.toRadians(0));
+                intakeStack = new Pose2d(32, 18,Math.toRadians(0));
                 midwayPose1b = new Pose2d(35, 7, Math.toRadians(53.5));
                 midwayPose2 = new Pose2d(29, -75, Math.toRadians(88));
                 midwayPose2a = new Pose2d(-40, -63.5, Math.toRadians(88));

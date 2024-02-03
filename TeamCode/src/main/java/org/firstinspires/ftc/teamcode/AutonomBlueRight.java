@@ -110,7 +110,7 @@ public class AutonomBlueRight extends LinearOpMode {
         switch(identifiedSpikeMarkLocation){
             case LEFT:
                 dropPurplePixelPose = new Pose2d(24, 3, Math.toRadians(45));
-                dropYellowPixelPose = new Pose2d(11, 61.5, Math.toRadians(-90));
+                dropYellowPixelPose = new Pose2d(10, 62.5, Math.toRadians(-90));
                 intakeStack = new Pose2d(68, -9,Math.toRadians(-85));
                 break;
             case MIDDLE:
@@ -119,7 +119,7 @@ public class AutonomBlueRight extends LinearOpMode {
                 intakeStack = new Pose2d(70, -10,Math.toRadians(-85));
                 break;
             case RIGHT:
-                dropPurplePixelPose = new Pose2d(15, -16.5, Math.toRadians(0));
+                dropPurplePixelPose = new Pose2d(15, -19, Math.toRadians(0));
                 dropYellowPixelPose = new Pose2d(32, 68.5, Math.toRadians(-90));
                 intakeStack = new Pose2d(75, -10,Math.toRadians(-85));
                 break;

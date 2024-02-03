@@ -24,7 +24,7 @@ public class FTCWiresTeleOpMode extends LinearOpMode {
     int down = 0;
     int suportUp = 0;
     int hangUp = 0;
-    int hangDown = 0;
+    int dronePos = 0;
 
     @Override
 
@@ -145,13 +145,11 @@ public class FTCWiresTeleOpMode extends LinearOpMode {
             }*/
 
             if(gamepad1.back){
-
                 robot.hangUp.setDirection(DcMotorEx.Direction.REVERSE);
                 robot.hangUp.setTargetPosition(0);
                 robot.hangUp.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 robot.hangUp.setPower(0.5);
                 sleep(300);
-
             }
             
             if(gamepad2.y){
@@ -179,12 +177,8 @@ public class FTCWiresTeleOpMode extends LinearOpMode {
                 sleep(200);
             }
 
-            if(gamepad2.back){
-                robot.getPixel();
-                robot.slider.setDirection(DcMotorEx.Direction.FORWARD);
-                robot.slider.setTargetPosition(0);
-                robot.slider.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                robot.slider.setPower(sliderSpeed);
+            if(gamepad2.back && dronePos==0){
+                dronePos = 1;
                 sleep(200);
             }
 
@@ -203,8 +197,9 @@ public class FTCWiresTeleOpMode extends LinearOpMode {
                 sleep(300);
             }
 
-            if (gamepad2.left_bumper) {
-
+            if (gamepad2.left_bumper && dronePos==1) {
+                robot.drone.setPosition(1);
+                dronePos = 0;
                 sleep(300);
             }
 

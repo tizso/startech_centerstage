@@ -21,6 +21,7 @@ public class HardwareBox extends LinearOpMode{
     public Servo leftS = null;
     public Servo rightS = null;
     public Servo pixelS = null;
+    public Servo drone = null;
 
     public Servo suport = null;
 
@@ -64,10 +65,12 @@ public class HardwareBox extends LinearOpMode{
         rightS = hwMap.get(Servo.class, "rightS");
         pixelS = hwMap.get(Servo.class, "pixelS");
         suport = hwMap.get(Servo.class, "suport");
+        drone = hwMap.get(Servo.class, "drone");
         pixelS.setPosition(0.36);
         leftS.setPosition(0.0);
         rightS.setPosition(1.0);
         suport.setPosition(0);
+        drone.setPosition(0);
 
     }
 
@@ -112,10 +115,11 @@ public class HardwareBox extends LinearOpMode{
     public void dropPixel(){
         safeWaitSeconds(1);
 
-        pixelS.setPosition(0.6);
+        pixelS.setPosition(0);
 
         safeWaitSeconds(1);
         getPixel();
+        safeWaitSeconds(1);
         pixelS.setPosition(0.36);
 
         slider.setDirection(DcMotorEx.Direction.FORWARD);

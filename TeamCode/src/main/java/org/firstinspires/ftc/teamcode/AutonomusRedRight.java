@@ -108,17 +108,17 @@ public class AutonomusRedRight extends LinearOpMode {
             case LEFT:
                 dropPurplePixelPose = new Pose2d(21, 2, Math.toRadians(42));
                 midwayPose1 = new Pose2d(14, -13, Math.toRadians(60));
-                dropYellowPixelPose = new Pose2d(48, -15.5, Math.toRadians(78));
+                dropYellowPixelPose = new Pose2d(48, -16.5, Math.toRadians(78));
                 break;
             case MIDDLE:
                 dropPurplePixelPose = new Pose2d(20.5, -6, Math.toRadians(0));
                 midwayPose1 = new Pose2d(14, -13, Math.toRadians(45));
-                dropYellowPixelPose = new Pose2d(38, -16.6,  Math.toRadians(80));
+                dropYellowPixelPose = new Pose2d(40, -16.2,  Math.toRadians(80));
                 break;
             case RIGHT:
-                dropPurplePixelPose = new Pose2d(14, -17, Math.toRadians(0));
-                midwayPose1 = new Pose2d(12, -13, Math.toRadians(45));
-                dropYellowPixelPose = new Pose2d(28.5, -17, Math.toRadians(83));
+                dropPurplePixelPose = new Pose2d(16.5, -17, Math.toRadians(0));
+                midwayPose1 = new Pose2d(11, -13, Math.toRadians(45));
+                dropYellowPixelPose = new Pose2d(28.5, -18.5, Math.toRadians(83));
                 break;
         }
 
@@ -130,7 +130,7 @@ public class AutonomusRedRight extends LinearOpMode {
         //parkPose2 = new Pose2d(0, 40, Math.toRadians(90));
 
         //parking right side
-        parkPose1 = new Pose2d(50, -14, Math.toRadians(90));
+        parkPose1 = new Pose2d(-15, -18, Math.toRadians(90));
         parkPose2 = new Pose2d(-5, -40, Math.toRadians(90));
 
         //Move robot to dropPurplePixel based on identified Spike Mark Location

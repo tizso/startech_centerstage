@@ -110,31 +110,31 @@ public class AutonomusRedLeft extends LinearOpMode {
         drive = new MecanumDrive(hardwareMap, initPose);
         switch(identifiedSpikeMarkLocation){
             case LEFT:
-                dropPurplePixelPose = new Pose2d(11, 17.5, Math.toRadians(0));
+                dropPurplePixelPose = new Pose2d(11, 14.8, Math.toRadians(0));
                 midwayPose1 = new Pose2d(5, -14.5, Math.toRadians(0));
                 intakeStack = new Pose2d(42, -12.5,Math.toRadians(0));
                 midwayPose1b = new Pose2d(43, -16, Math.toRadians(58));
                 midwayPose2 = new Pose2d(33, -68, Math.toRadians(88));
                 midwayPose2a = new Pose2d(-15, -68, Math.toRadians(88));
-                dropYellowPixelPose = new Pose2d(-17, -79, Math.toRadians(88));
+                dropYellowPixelPose = new Pose2d(-16, -80.6, Math.toRadians(88));
                 break;
             case MIDDLE:
                 dropPurplePixelPose = new Pose2d(20, -2, Math.toRadians(0));
                 midwayPose1 = new Pose2d(5, 20, Math.toRadians(0));
                 intakeStack = new Pose2d(33, 18,Math.toRadians(0));
-                midwayPose1b = new Pose2d(39, 7, Math.toRadians(55));
+                midwayPose1b = new Pose2d(39, 6, Math.toRadians(55));
                 midwayPose2 = new Pose2d(29, -63.5, Math.toRadians(88));
                 midwayPose2a = new Pose2d(-40, -63.5, Math.toRadians(88));
-                dropYellowPixelPose = new Pose2d(-36.5, -72.5, Math.toRadians(88));
+                dropYellowPixelPose = new Pose2d(-37, -73.2, Math.toRadians(88));
                 break;
             case RIGHT:
                 dropPurplePixelPose = new Pose2d(20, -8, Math.toRadians(-40));
                 midwayPose1 = new Pose2d(7, -1, Math.toRadians(-20));
                 intakeStack = new Pose2d(42, -1,Math.toRadians(0));
-                midwayPose1b = new Pose2d(44, -1, Math.toRadians(58));
+                midwayPose1b = new Pose2d(44, -1, Math.toRadians(60));
                 midwayPose2 = new Pose2d(47, -63.5, Math.toRadians(85));
                 midwayPose2a = new Pose2d(-33, -63.5, Math.toRadians(88));
-                dropYellowPixelPose = new Pose2d(-33.7, -76.3, Math.toRadians(88));
+                dropYellowPixelPose = new Pose2d(-31, -79.3, Math.toRadians(88));
                 break;
         }
 

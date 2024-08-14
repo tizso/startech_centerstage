@@ -93,35 +93,35 @@ public class AutonomBlueLeft extends LinearOpMode {
         Pose2d parkPose1 = new Pose2d(0,0, 0);
         Pose2d parkPose2 = new Pose2d(0,0, 0);
         double waitSecondsBeforeDrop = 0;
-        MecanumDrive drive = new MecanumDrive(hardwareMap, initPose);
+
 
         initPose = new Pose2d(0, 0, Math.toRadians(0)); //Starting pose
         moveBeyondTrussPose = new Pose2d(10,0,0);
 
         //identified Spike Mark Location
-        drive = new MecanumDrive(hardwareMap, initPose);
+        MecanumDrive drive = new MecanumDrive(hardwareMap, initPose);
         switch(identifiedSpikeMarkLocation){
             case LEFT:
-                dropPurplePixelPose = new Pose2d(11, 15, Math.toRadians(0));
+                dropPurplePixelPose = new Pose2d(17, 15, Math.toRadians(0));
                 midwayPose1 = new Pose2d(8, 13, Math.toRadians(-45));
-                dropYellowPixelPose = new Pose2d(14, 27, Math.toRadians(-81));
+                dropYellowPixelPose = new Pose2d(37, 38, Math.toRadians(-83));
                 break;
             case MIDDLE:
-                dropPurplePixelPose = new Pose2d(20, 2, Math.toRadians(0));
+                dropPurplePixelPose = new Pose2d(26.5, 3, Math.toRadians(0));
                 midwayPose1 = new Pose2d(10, 13, Math.toRadians(-45));
-                dropYellowPixelPose = new Pose2d(29, 28.2,  Math.toRadians(-85));
+                dropYellowPixelPose = new Pose2d(36.5, 36.5,  Math.toRadians(-85));
                 break;
             case RIGHT:
                 dropPurplePixelPose = new Pose2d(21, -7.5, Math.toRadians(-43));
                 midwayPose1 = new Pose2d(24, 13, Math.toRadians(-60));
-                dropYellowPixelPose = new Pose2d(35, 32.8, Math.toRadians(-80));
+                dropYellowPixelPose = new Pose2d(49, 35, Math.toRadians(-83));
                 break;
         }
 
         waitSecondsBeforeDrop = 1; //TODO: Adjust time to wait for alliance partner to move from board
 
         //parking left side
-        parkPose1 = new Pose2d(-20, 24, Math.toRadians(-90));
+        parkPose1 = new Pose2d(-13, 36, Math.toRadians(-90));
         //parkPose2 = new Pose2d(-5, 30, Math.toRadians(-83));
 
         //parking right side

@@ -110,22 +110,26 @@ public class AutonomBlueRight extends LinearOpMode {
         switch(identifiedSpikeMarkLocation){
             case LEFT:
                 dropPurplePixelPose = new Pose2d(24, 3, Math.toRadians(45));
-                dropYellowPixelPose = new Pose2d(10, 62.5, Math.toRadians(-90));
+                midwayPose1 = new Pose2d(4, -8, Math.toRadians(0));
+                midwayPose1a = new Pose2d(0, -19, Math.toRadians(-67));
+                dropYellowPixelPose = new Pose2d(4, 61.7, Math.toRadians(-90));
                 intakeStack = new Pose2d(68, -9,Math.toRadians(-85));
                 break;
             case MIDDLE:
                 dropPurplePixelPose = new Pose2d(20, -2, Math.toRadians(0));
-                dropYellowPixelPose = new Pose2d(22.5, 66.5, Math.toRadians(-90));
+                midwayPose1 = new Pose2d(4, -8, Math.toRadians(0));
+                midwayPose1a = new Pose2d(0, -19, Math.toRadians(-67));
+                dropYellowPixelPose = new Pose2d(22.5, 65.2, Math.toRadians(-90));
                 intakeStack = new Pose2d(70, -10,Math.toRadians(-85));
                 break;
             case RIGHT:
-                dropPurplePixelPose = new Pose2d(15, -19, Math.toRadians(0));
-                dropYellowPixelPose = new Pose2d(32, 68.5, Math.toRadians(-90));
+                dropPurplePixelPose = new Pose2d(16, -18.5, Math.toRadians(0));
+                midwayPose1 = new Pose2d(6, -14, Math.toRadians(0));
+                midwayPose1a = new Pose2d(0, -21.4, Math.toRadians(-67));
+                dropYellowPixelPose = new Pose2d(33, 68, Math.toRadians(-90));
                 intakeStack = new Pose2d(75, -10,Math.toRadians(-85));
                 break;
         }
-        midwayPose1 = new Pose2d(4, -8, Math.toRadians(0));
-        midwayPose1a = new Pose2d(0, -19, Math.toRadians(-67));
 
         midwayPose2 = new Pose2d(38, 47, Math.toRadians(-85));
         waitSecondsBeforeDrop = 2; //TODO: Adjust time to wait for alliance partner to move from board
